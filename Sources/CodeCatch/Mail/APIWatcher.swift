@@ -29,10 +29,12 @@ enum APIWatcher {
         account.isOutlook ? OutlookAPI(account: account) : GmailAPI(account: account)
     }
 
-    /// Watches the inbox of a signed-in account until cancelled: backfills recent mail, then checks
-    /// for new mail every `poll` seconds (neither Gmail nor Outlook can push to a Mac app).
+    /// Watches the inbox of a signed-in account until cancelled: backfills recent mail, or carries on
+    /// from `position`, then checks for new mail every `poll` seconds (neither Gmail nor Outlook can
+    /// push to a Mac app).
     static func watch(
         _ account: MailAccount,
+        from position: ReadPosition? = nil,
         status: @escaping @MainActor (SourceStatus) -> Void,
         deliver: @escaping @MainActor (IncomingMessage) -> Void,
         event: @escaping @MainActor (SourceEvent) -> Void = { _ in },
@@ -42,7 +44,8 @@ enum APIWatcher {
         retryDelay: TimeInterval = 5
     ) async {
         let mailbox = mailbox ?? api(for: account)
-        var cursor: String?
+        var cursor: String? = if case .cursor(let saved) = position { saved } else { nil }
+        var resuming = cursor != nil
         var seen = Set<String>()  // a message can show up twice: at the backfill's edge, or at the cursor's
         var backoff = retryDelay
         while !Task.isCancelled {
@@ -64,21 +67,26 @@ enum APIWatcher {
 
                 if cursor == nil {
                     let start = try await mailbox.cursor()
-                    try await receive(try await mailbox.inbox(since: Date().addingTimeInterval(-lookback), limit: 60))
+                    try await receive(try await mailbox.inbox(since: Date().addingTimeInterval(-lookback), limit: MailWatcher.backfill))
                     cursor = start
+                    await event(.read(.cursor(start)))
+                    resuming = false
                 }
                 try Task.checkCancellation()
                 await status(.live)
                 backoff = retryDelay
                 while !Task.isCancelled {
                     let (added, next) = try await mailbox.added(since: cursor!)
-                    let pending = added.filter { !seen.contains($0) }
+                    // The same newest few on a retry, so a failed fetch can't widen the window to older mail.
+                    let pending = (resuming ? added.suffix(MailWatcher.backfill) : added[...]).filter { !seen.contains($0) }
                     if pending.isEmpty { try await receive([]) }
                     // Bound memory while keeping every fresh message, including recovery bursts.
                     for start in stride(from: 0, to: pending.count, by: 50) {
                         try await receive(Array(pending[start..<min(start + 50, pending.count)]))
                     }
+                    resuming = false
                     cursor = next
+                    await event(.read(.cursor(next)))
                     try await Task.sleep(for: .seconds(poll))
                 }
             } catch MailAPIError.cursorExpired {

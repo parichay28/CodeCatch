@@ -7,10 +7,16 @@ protocol LocalStore: AnyObject {
     var name: String { get }
     /// How far the store has been read (a ROWID).
     var position: Int64 { get }
+    /// Where a new store can carry on from; nil for one that always reads its newest again.
+    var readPosition: ReadPosition? { get }
     /// Opens the store for messages from `since` on; returns what is in the way when it can't.
     func open(since: Date) -> String?
     func newMessages() throws -> [IncomingMessage]
     func close()
+}
+
+extension LocalStore {
+    var readPosition: ReadPosition? { nil }
 }
 
 /// Polls a local store (read-only) once a second for new incoming messages.
@@ -71,11 +77,13 @@ final class LocalWatcher {
         do {
             let messages = try store.newMessages()
             let checkedAt = Date()
+            let read = store.readPosition
             report(.live)
             Task { @MainActor in
                 event(.checked(checkedAt))
                 if let newest = messages.map(\.date).max() { event(.message(newest)) }
                 for message in messages { deliver(message) }
+                if let read { event(.read(read)) }
             }
         } catch {
             retry(.failed("Can't read \(store.name)"))

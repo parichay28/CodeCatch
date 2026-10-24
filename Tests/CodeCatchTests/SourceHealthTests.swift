@@ -82,10 +82,13 @@ import Testing
     #expect(monitor.health[key] == nil)
 }
 
+/// Also: a reconnect after a network change or sleep carries on from where the inbox stopped, rather
+/// than reading its history again before new mail; Check Now still reads it again.
 @Test @MainActor func mailRecoversAfterOfflineAndInterfaceChanges() async throws {
     let suite = "SourceHealthTests.\(UUID())"
     let defaults = try #require(UserDefaults(suiteName: suite))
     defer { defaults.removePersistentDomain(forName: suite) }
+    defaults.set(false, forKey: Prefs.messages)
     let account = MailAccount(label: "Test", host: "example.invalid", user: "test@example.invalid")
     let key = account.id.uuidString
     let starts = AsyncStream<SourceMonitor.Callbacks>.makeStream()
@@ -98,23 +101,56 @@ import Testing
         }, hasCredential: { _ in true }, defaults: defaults)
     monitor.restartMail([account])
     let original = await iterator.next()!
+    #expect(original.from == nil)
     original.status(.live)
+    original.event(.checked(Date()))
+    original.event(.read(.cursor("a")))
     monitor.networkChanged(online: true, interfaces: ["en0"])
     #expect(startCount == 1)
     monitor.networkChanged(online: false, interfaces: [])
     original.status(.live)
+    original.event(.read(.cursor("stale")))
     #expect(monitor.health[key]?.status.needsAttention == true)
     monitor.networkChanged(online: true, interfaces: ["en0"])
     let restored = await iterator.next()!
+    #expect(restored.from == .cursor("a"))
     restored.status(.live)
+    restored.event(.read(.cursor("b")))
     #expect(monitor.health[key]?.status == .live)
     monitor.networkChanged(online: true, interfaces: ["en1"])
     let switched = await iterator.next()!
+    #expect(switched.from == .cursor("b"))
     restored.status(.live)
     #expect(monitor.health[key]?.status == .connecting)
     switched.status(.live)
     #expect(monitor.health[key]?.status == .live)
     #expect(startCount == 3)
+
+    switched.event(.read(.cursor("c")))
+    monitor.resume()
+    #expect(await iterator.next()?.from == .cursor("c"))
+    monitor.check(key)
+    #expect(await iterator.next()?.from == nil)
+}
+
+/// After a sleep longer than the history window a fresh start reads less than everything since the
+/// saved position, so the inbox starts fresh instead of carrying on. A later check that saved no
+/// position (a batch read, then a failure) doesn't make the old one fresh.
+@Test @MainActor func mailStartsFreshAfterSleepingPastTheHistoryWindow() async throws {
+    let suite = "SourceHealthTests.\(UUID())"
+    let defaults = try #require(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    defaults.set(false, forKey: Prefs.messages)
+    let starts = AsyncStream<SourceMonitor.Callbacks>.makeStream()
+    var iterator = starts.stream.makeAsyncIterator()
+    let monitor = SourceMonitor(watchMail: { _, callbacks in starts.continuation.yield(callbacks) }, hasCredential: { _ in true }, defaults: defaults)
+    monitor.restartMail([MailAccount(label: "Test", host: "example.invalid", user: "test@example.invalid")])
+    let asleep = await iterator.next()!
+    asleep.event(.checked(Date().addingTimeInterval(-Prefs.history(in: defaults) - 60)))
+    asleep.event(.read(.cursor("old")))
+    asleep.event(.checked(Date()))
+    monitor.resume()
+    #expect(await iterator.next()?.from == nil)
 }
 
 @Test @MainActor func editingOneAccountKeepsOtherInboxesConnected() async throws {

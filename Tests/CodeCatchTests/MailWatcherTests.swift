@@ -287,14 +287,55 @@ func rawSystemErrorTextNeverReachesTheSourceStatus(error: any Error) {
     #expect(try store.newMessages().isEmpty)
 }
 
+/// Carrying on after sleep must not skip new texts: a saved ROWID counts only while the same message
+/// is still there (a rebuilt or replaced database numbers its rows anew), else reading starts at the
+/// history cutoff again.
+@Test func messagesCarryOnFromTheirLastRowOnlyInTheSameDatabase() throws {
+    let path = FileManager.default.temporaryDirectory.appendingPathComponent("MessagesStoreTests-\(UUID()).db").path
+    defer { try? FileManager.default.removeItem(atPath: path) }
+    let now = Int64(Date().timeIntervalSinceReferenceDate * 1e9)
+    /// Row 1 is older than the cutoff; the rest are recent.
+    func write(_ rows: ClosedRange<Int>, guids: String, rebuilding: Bool = false) {
+        var db: OpaquePointer?
+        #expect(sqlite3_open(path, &db) == SQLITE_OK)
+        let values = rows.map { "(\($0), '\(guids)\($0)', 'Your code is 48291\($0 % 10)', NULL, \($0 == 1 ? now - 3 * 86400 * 1_000_000_000 : now), 1, 0)" }
+        #expect(
+            sqlite3_exec(
+                db,
+                """
+                CREATE TABLE IF NOT EXISTS handle (ROWID INTEGER PRIMARY KEY, id TEXT);
+                CREATE TABLE IF NOT EXISTS message (ROWID INTEGER PRIMARY KEY, guid TEXT, text TEXT, attributedBody BLOB, date INTEGER, handle_id INTEGER, is_from_me INTEGER);
+                INSERT OR IGNORE INTO handle VALUES (1, '+15550100');
+                \(rebuilding ? "DELETE FROM message;" : "")
+                INSERT INTO message VALUES \(values.joined(separator: ", "));
+                """, nil, nil, nil) == SQLITE_OK)
+        sqlite3_close(db)
+    }
+    func read(after position: ReadPosition?) throws -> (ids: [String], position: ReadPosition?) {
+        let store = MessagesStore(path: path, after: position)
+        #expect(store.open(since: Date().addingTimeInterval(-86400)) == nil)
+        return (try store.newMessages().compactMap(\.messageID), store.readPosition)
+    }
+
+    write(1...4, guids: "a")
+    let first = try read(after: nil)
+    #expect(first.ids == ["2", "3", "4"])
+    write(5...5, guids: "a")
+    #expect(try read(after: first.position).ids == ["5"])
+    write(1...6, guids: "b", rebuilding: true)
+    #expect(try read(after: first.position).ids == ["2", "3", "4", "5", "6"])
+}
+
 private actor BurstyAPIInbox: MailAPI {
     let completed: AsyncStream<String>.Continuation
     var failOnce: Bool
     let count: Int
+    let failing: String
     var cursors: [String] = []
-    init(failOnce: Bool, count: Int, completed: AsyncStream<String>.Continuation) {
+    init(failOnce: Bool, count: Int, failing: Int? = nil, completed: AsyncStream<String>.Continuation) {
         self.failOnce = failOnce
         self.count = count
+        self.failing = String(failing ?? (count > 50 ? 58 : 8))
         self.completed = completed
     }
     func cursor() -> String { "start" }
@@ -308,7 +349,7 @@ private actor BurstyAPIInbox: MailAPI {
         return ((1...count).map(String.init), "end")
     }
     func message(_ id: String, account: MailAccount) throws -> IncomingMessage? {
-        if id == String(count > 50 ? 58 : 8), failOnce {
+        if id == failing, failOnce {
             failOnce = false
             throw IMAPError.timeout
         }
@@ -419,6 +460,45 @@ func imapCursorCannotSkipFreshMailAfterBurstOrFailedFetch(failOnce: Bool, count:
     var expected = stride(from: 1, through: count, by: 50).map { Array($0...min($0 + 49, count)) }
     if failOnce { expected.append(expected.last!) }
     #expect(await inbox.fetches == expected)
+}
+
+/// After sleep an inbox carries on from where it stopped instead of reading its history again, and a
+/// long sleep reads no more than a fresh start would (the newest 60), even when a fetch fails and is
+/// retried; an IMAP mailbox whose UIDs were reset starts over.
+@Test(arguments: [(ReadPosition.uid(5, validity: 1), Array(17...76)), (.uid(5, validity: 2), Array(1...76)), (.cursor("resumed"), Array(17...76))])
+@MainActor
+func inboxCarriesOnAfterSleepWithoutRereadingHistory(from position: ReadPosition, expected: [Int]) async {
+    let completed = AsyncStream<String>.makeStream()
+    let account = MailAccount(label: "Test", host: "example.invalid", user: "test@example.invalid")
+    var delivered: [String] = []
+    var read: ReadPosition?
+    let deliver: @MainActor (IncomingMessage) -> Void = { if let id = $0.messageID { delivered.append(id) } }
+    let event: @MainActor (SourceEvent) -> Void = { if case .read(let position) = $0 { read = position } }
+    let api = BurstyAPIInbox(failOnce: true, count: 76, failing: 70, completed: completed.continuation)
+    let imap = BurstyIMAPInbox(failOnce: false, count: 76, completed: completed.continuation)
+    let watcher = Task {
+        if case .cursor = position {
+            await APIWatcher.watch(account, from: position, status: { _ in }, deliver: deliver, event: event, mailbox: api, poll: 0.001, retryDelay: 0)
+        } else {
+            await MailWatcher.watch(account, from: position, status: { _ in }, deliver: deliver, event: event, connection: { imap }, retryDelay: 0)
+        }
+    }
+    // Only ends a hung watcher: a passing run stops at the end marker.
+    let deadline = Task {
+        try? await Task.sleep(for: .seconds(10))
+        completed.continuation.finish()
+    }
+    for await _ in completed.stream { break }
+    watcher.cancel()
+    deadline.cancel()
+    await watcher.value
+    #expect(delivered == expected.map(String.init))
+    if case .cursor = position {
+        #expect(await api.cursors == ["resumed", "resumed", "end"])
+        #expect(read == .cursor("end"))
+    } else {
+        #expect(read == .uid(76, validity: 1))
+    }
 }
 
 private actor GraphPages {

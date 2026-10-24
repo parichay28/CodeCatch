@@ -14,9 +14,15 @@ protocol MailConnection: Sendable {
 extension IMAPConnection: MailConnection {}
 
 enum MailWatcher {
-    /// Watches one INBOX until cancelled: backfills history, then IDLEs, reconnecting with backoff.
+    /// A fresh start reads at most the newest this many: after a long gap only those can still hold a
+    /// live code. Carrying on after sleep reads no more than that either.
+    static let backfill = 60
+
+    /// Watches one INBOX until cancelled: backfills history, or carries on from `position`, then IDLEs,
+    /// reconnecting with backoff.
     static func watch(
         _ account: MailAccount,
+        from position: ReadPosition? = nil,
         status: @escaping @MainActor (SourceStatus) -> Void,
         deliver: @escaping @MainActor (IncomingMessage) -> Void,
         event: @escaping @MainActor (SourceEvent) -> Void = { _ in },
@@ -24,8 +30,8 @@ enum MailWatcher {
         connection: (@Sendable () -> any MailConnection)? = nil,
         retryDelay: TimeInterval = 5
     ) async {
-        var lastUID: Int?
-        var uidValidity: Int?
+        var (lastUID, uidValidity): (Int?, Int?) = if case .uid(let uid, let validity) = position { (uid, validity) } else { (nil, nil) }
+        var resuming = lastUID != nil
         var backoff = retryDelay
         while !Task.isCancelled {
             let conn: any MailConnection
@@ -48,26 +54,33 @@ enum MailWatcher {
                         try Task.checkCancellation()
                         try await hand(try await conn.fetch(uids, account: account), event: event, deliver: deliver)
                     }
+                    func commit(_ uid: Int) async {
+                        lastUID = uid
+                        await event(.read(.uid(uid, validity: uidValidity)))
+                    }
 
                     if lastUID == nil {
                         let recent = try await conn.search("SINCE \(imapDay(Date().addingTimeInterval(-lookback)))")
                         let next = examine.lazy.compactMap { $0.number(after: "UIDNEXT ") }.first
-                        try await receive(Array(recent.suffix(60)))
-                        lastUID = max((next ?? 1) - 1, recent.max() ?? 0)
+                        try await receive(Array(recent.suffix(backfill)))
+                        await commit(max((next ?? 1) - 1, recent.max() ?? 0))
+                        resuming = false
                     }
                     try Task.checkCancellation()
                     await status(.live)
                     backoff = retryDelay
                     let canIdle = await conn.capabilities.contains("IDLE")
                     while !Task.isCancelled {
-                        let new = try await conn.search("UID \(lastUID! + 1):*").filter { $0 > lastUID! }.sorted()
+                        var new = try await conn.search("UID \(lastUID! + 1):*").filter { $0 > lastUID! }.sorted()
+                        if resuming { new = Array(new.suffix(backfill)) }
                         if new.isEmpty { try await receive([]) }
                         // Commit each delivered batch so a later fetch failure resumes at that boundary.
                         for start in stride(from: 0, to: new.count, by: 50) {
                             let batch = Array(new[start..<min(start + 50, new.count)])
                             try await receive(batch)
-                            lastUID = batch.last
+                            await commit(batch.last!)
                         }
+                        resuming = false
                         if canIdle {
                             try await conn.idle(renewAfter: 540)
                         } else {

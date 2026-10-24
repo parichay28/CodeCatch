@@ -5,6 +5,8 @@ import Network
 @MainActor
 final class SourceMonitor: ObservableObject {
     struct Callbacks {
+        /// Where this source's previous worker stopped, when this one is to carry on from there.
+        let from: ReadPosition?
         let status: @MainActor (SourceStatus) -> Void
         let deliver: @MainActor (IncomingMessage) -> Void
         let event: @MainActor (SourceEvent) -> Void
@@ -19,6 +21,10 @@ final class SourceMonitor: ObservableObject {
     private var local: [String: LocalWatcher] = [:]
     private var tasks: [String: Task<Void, Never>] = [:]
     private var generations: [String: UUID] = [:]
+    /// How far each source has read, as of the check that read it. Only `resume` and network changes
+    /// start from it, and only within the history window: every other restart (a setting, Check Now,
+    /// an edited account) is there to read the history again.
+    private var positions: [String: (position: ReadPosition, checked: Date)] = [:]
     private var pathMonitor: NWPathMonitor?
     private var network: (online: Bool, interfaces: [String])?
     private let watchMail: (MailAccount, Callbacks) async -> Void
@@ -34,11 +40,11 @@ final class SourceMonitor: ObservableObject {
             watchMail ?? { account, callbacks in
                 if account.usesSignIn {
                     await APIWatcher.watch(
-                        account, status: callbacks.status, deliver: callbacks.deliver,
+                        account, from: callbacks.from, status: callbacks.status, deliver: callbacks.deliver,
                         event: callbacks.event, lookback: Prefs.history(in: defaults))
                 } else {
                     await MailWatcher.watch(
-                        account, status: callbacks.status, deliver: callbacks.deliver,
+                        account, from: callbacks.from, status: callbacks.status, deliver: callbacks.deliver,
                         event: callbacks.event, lookback: Prefs.history(in: defaults))
                 }
             }
@@ -66,25 +72,37 @@ final class SourceMonitor: ObservableObject {
         monitor.start(queue: DispatchQueue(label: "codecatch.network"))
     }
 
-    func restartMessages() {
-        restart(MessagesStore.sourceKey, enabled: defaults.bool(forKey: Prefs.receivedCodes) && defaults.bool(forKey: Prefs.messages)) { MessagesStore() }
+    /// After sleep: reconnects every source. Messages and the mail accounts carry on from where they
+    /// stopped, so new mail isn't queued behind the history window being read again; Apple Mail
+    /// rereads only its newest 60, from disk.
+    func resume() {
+        restartMessages(resuming: true)
+        restartAppleMail()
+        restartMail(accounts, resuming: true)
+    }
+
+    func restartMessages(resuming: Bool = false) {
+        restart(
+            MessagesStore.sourceKey, enabled: defaults.bool(forKey: Prefs.receivedCodes) && defaults.bool(forKey: Prefs.messages),
+            resuming: resuming
+        ) { MessagesStore(after: $0) }
     }
 
     func restartAppleMail() {
-        restart(AppleMailStore.sourceKey, enabled: receiving && defaults.bool(forKey: Prefs.appleMail)) { AppleMailStore() }
+        restart(AppleMailStore.sourceKey, enabled: receiving && defaults.bool(forKey: Prefs.appleMail)) { _ in AppleMailStore() }
     }
 
-    private func restart(_ key: String, enabled: Bool, store: () -> LocalStore) {
+    private func restart(_ key: String, enabled: Bool, resuming: Bool = false, store: (ReadPosition?) -> LocalStore) {
         local.removeValue(forKey: key)?.stop()
-        let callbacks = begin(key)
+        let callbacks = begin(key, resuming: resuming)
         guard enabled else { return }
         health[key]?.status = .connecting
-        let watcher = LocalWatcher(store())
+        let watcher = LocalWatcher(store(callbacks.from))
         watcher.start(lookback: Prefs.history(in: defaults), status: callbacks.status, deliver: callbacks.deliver, event: callbacks.event)
         local[key] = watcher
     }
 
-    func restartMail(_ accounts: [MailAccount], onlyChanged: Bool = false) {
+    func restartMail(_ accounts: [MailAccount], onlyChanged: Bool = false, resuming: Bool = false) {
         let previous = Set(self.accounts)
         self.accounts = accounts
         let keys = Set(accounts.map { $0.id.uuidString })
@@ -92,8 +110,9 @@ final class SourceMonitor: ObservableObject {
             tasks.removeValue(forKey: key)?.cancel()
             generations.removeValue(forKey: key)
             health.removeValue(forKey: key)
+            positions.removeValue(forKey: key)
         }
-        for account in accounts where !onlyChanged || !previous.contains(account) { restart(account) }
+        for account in accounts where !onlyChanged || !previous.contains(account) { restart(account, resuming: resuming) }
     }
 
     func check(_ key: String) {
@@ -117,16 +136,16 @@ final class SourceMonitor: ObservableObject {
         let previous = network
         network = (online, interfaces)
         guard let previous else {
-            if !online { restartMail(accounts) }
+            if !online { restartMail(accounts, resuming: true) }
             return
         }
-        if previous.online != online || previous.interfaces != interfaces { restartMail(accounts) }
+        if previous.online != online || previous.interfaces != interfaces { restartMail(accounts, resuming: true) }
     }
 
-    private func restart(_ account: MailAccount) {
+    private func restart(_ account: MailAccount, resuming: Bool = false) {
         let key = account.id.uuidString
         tasks.removeValue(forKey: key)?.cancel()
-        let callbacks = begin(key)
+        let callbacks = begin(key, resuming: resuming)
         guard receiving, account.enabled else { return }
         guard hasCredential(account) else {
             health[key]?.status = .attention(SourceStatus.needsSignIn)
@@ -141,14 +160,17 @@ final class SourceMonitor: ObservableObject {
         tasks[key] = Task { await watch(account, callbacks) }
     }
 
-    private func begin(_ key: String) -> Callbacks {
+    private func begin(_ key: String, resuming: Bool = false) -> Callbacks {
         let generation = UUID()
         generations[key] = generation
+        // Past the history window a fresh start reads less than everything since.
+        if !resuming || Date().timeIntervalSince(positions[key]?.checked ?? .distantPast) >= Prefs.history(in: defaults) { positions[key] = nil }
         var source = health[key] ?? SourceHealth()
         source.status = .off
         source.retryAt = nil
         health[key] = source
         return Callbacks(
+            from: positions[key]?.position,
             status: { [weak self] status in
                 guard let self, self.generations[key] == generation else { return }
                 self.health[key]?.status = status
@@ -159,7 +181,11 @@ final class SourceMonitor: ObservableObject {
             },
             event: { [weak self] event in
                 guard let self, self.generations[key] == generation else { return }
-                self.health[key]?.record(event)
+                if case .read(let position) = event {
+                    self.positions[key] = (position, self.health[key]?.lastChecked ?? .distantPast)
+                } else {
+                    self.health[key]?.record(event)
+                }
             })
     }
 }

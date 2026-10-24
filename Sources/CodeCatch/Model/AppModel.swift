@@ -136,8 +136,7 @@ final class AppModel: ObservableObject {
         let center = NSWorkspace.shared.notificationCenter
         center.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
             Task { @MainActor in
-                self?.restartMessages()
-                self?.restartMail()
+                self?.monitor.resume()
                 self?.unlockWithMac()
             }
         }
