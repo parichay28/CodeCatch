@@ -93,15 +93,16 @@ public enum CodeExtractor {
         return best?.code
     }
 
-    /// How long the text says the code stays valid ("expires in 10 minutes",
-    /// "velja 3 minute", "gültig für 5 Minuten"), 30 s to 24 h; nil when unstated.
+    /// How long the text says the code stays valid ("expires in 10 minutes", "velja 3 minute",
+    /// "gültig für 1 Stunde", "valable 24 heures", "válido por 10 minutos"), 30 s to 24 h; nil when unstated.
     public static func validity(in text: String) -> TimeInterval? {
         let ns = text as NSString
         guard let m = lifetime.firstMatch(in: text, range: NSRange(location: 0, length: ns.length)),
             let n = Double(ns.substring(with: m.range(at: 1)))
         else { return nil }
         let unit = ns.substring(with: m.range(at: 2)).lowercased()
-        let seconds = n * (unit.hasPrefix("s") ? 1 : unit.hasPrefix("h") || unit.hasPrefix("u") ? 3600 : 60)
+        // Seconds and minutes by their first letters; every other unit the pattern takes is an hour.
+        let seconds = n * (unit.hasPrefix("se") ? 1 : unit.hasPrefix("m") ? 60 : 3600)
         return (30...86400).contains(seconds) ? seconds : nil
     }
 
@@ -113,7 +114,8 @@ public enum CodeExtractor {
     }
 
     private static let lifetime = rx(
-        #"\b(?:expir\w*|valid\w*|velja\w*|veljav\w*|gültig\w*|läuft|within|zapade\w*|poteče|istek\w*)\D{0,24}?\b(\d{1,3})\s*(seconds?|secs?|sekund\w*|minutes?|mins?|minut\w*|hours?|hrs?|ur[aeio]?|stunden?)\b"#,
+        #"\b(?:expir\w*|v[aá]lid\w*|valable|caduc\w*|scad\w*|velja\w*|veljav\w*|gültig\w*|läuft|within|zapade\w*|poteče|istek\w*)\D{0,24}?\b(\d{1,3})\s*"#
+            + #"(second\w*|secs?|segund\w*|sekund\w*|minutes?|mins?|minut\w*|hours?|hrs?|heures?|horas?|ore|ur[aeio]?|stunden?)\b"#,
         .caseInsensitive)
     /// Group 2 is the code when it looks like one (4–10 characters, a digit among them).
     private static let origin = rx(#"(?m)^@([a-z0-9-]+(?:\.[a-z0-9-]+)+)\s+#(?:(?=[a-z]*\d)([a-z0-9]{4,10})\b)?"#, .caseInsensitive)
@@ -171,19 +173,23 @@ public enum CodeExtractor {
 
     /// Scripts without spaces between words (Chinese, Japanese, Korean, Thai), and Hebrew,
     /// Arabic and Persian, which join "the" and prepositions to a word, match without word boundaries.
-    private static let unspacedKeywords = [
+    private static let unspacedKeywords =
+        unspacedCodeNouns + [
+            // Japanese: password, one-time; Korean: authentication, password
+            "パスワード", "ワンタイム", "인증", "비밀번호",
+            // Hebrew: verification, password; Arabic: verify
+            "אימות", "סיסמה", "تحقق",
+        ]
+
+    /// The ones that name a code itself, as `codeNoun` does in spaced scripts; not a QR, coupon, promo,
+    /// invite or gift code, as `codeWord` isn't. (Not "bar" code: バー and 바 also end ウーバー and 알리바바.)
+    private static let unspacedCodeNouns = [
         // Chinese
         "验证码", "驗證碼", "动态码", "動態碼", "校验码", "确认码", "认证码", "認證碼", "代码",
-        // Japanese
-        "コード", "認証番号", "暗証番号", "パスワード", "ワンタイム",
-        // Korean
-        "인증", "코드", "비밀번호",
-        // Hebrew
-        "קוד", "אימות", "סיסמה",
-        // Arabic, Persian
-        "رمز", "كود", "تحقق", "کد",
-        // Thai
-        "รหัส",
+        // Japanese, Korean
+        "(?<!QR|ＱＲ|クーポン|プロモーション|招待|ギフト)コード", "認証番号", "暗証番号", "인증번호", "(?<!QR ?|쿠폰|프로모션|초대|기프트)코드",
+        // Hebrew, Arabic, Persian, Thai
+        "קוד", "رمز", "كود", "کد", "รหัส",
     ]
 
     private static let keyword = rx(#"\b(?:"# + keywords.joined(separator: "|") + #")\b|"# + unspacedKeywords.joined(separator: "|"), .caseInsensitive)
@@ -215,12 +221,18 @@ public enum CodeExtractor {
     private static let explicitBefore = rx(
         "(?:" + codeWord + #"|kod[aoe]?|passcode|pin|otp|geslo|token|código|codice)\s*(?:is|je|ist|es|est|lautet)?\s*[:=\-–]?\s*$"#,
         .caseInsensitive)
-    /// "Quote Number: 54321", "Ref: 482913", "card ending 4321", "text HELP to 466453": a labelled reference, not a code.
+    /// "Quote Number: 54321", "Ref: 482913", "card ending 4321", "text HELP to 466453", "Bestellung 123456",
+    /// "commande n° 123456": a labelled reference, not a code.
     private static let referenceLabel = rx(
-        #"\b(?:number|no|nr|št|stevilka|številka|ref\w*|id|order|invoice|quote|ticket|case|account|customer|client|member|phone|tel|mobile|fax|iban|card|ending(?: in)?|postal|zip|račun\w*|naročil\w*|pošiljk\w*|tracking|parcel|booking|reservation)\s*[.:#]?\s*(?:no\.?\s*)?[:#]?\s*$|\bref\w*\s+(?:code|kod\w*)\s*[:#]?\s*$|\b(?:text|txt|reply|send)\s+\w+\s+to\s*$"#,
+        #"\b(?:number|no|nr|št|stevilka|številka|r[eé]f\w*|id|order|invoice|quote|ticket|case|account|customer|client|member|phone|tel|mobile|fax|iban|card|ending(?: in)?|postal|zip|račun\w*|naročil\w*|pošiljk\w*|tracking|parcel|booking|reservation"#
+            // German, French, Spanish, Portuguese, Italian: order, invoice, shipment, booking, number (not a German
+            // compound that names a one-time code: Sicherheitsnummer, Transaktionsnummer…)
+            + #"|bestellung|auftrag|sendung|rechnung|buchung|lieferung|(?!(?:(?:best(?:ä|ae)tig|sicherheit|verifi|authenti|transaktion|zugang|anmelde|login|einmal|freigabe)\w*|tan|pin)nummer)(?<!tan-|pin-)\w*nummer|commande|facture|colis|dossier|pedido|factura|fatura|encomenda|reserva|env[ií]o|ordine|fattura|prenotazione|spedizione|n[uú]m[eé]ro)"#
+            + #"\s*[.:#]?\s*(?:(?:no\.?|n[°º])\s*)?[:#]?\s*$|\bref\w*\s+(?:code|kod\w*)\s*[:#]?\s*$|\b(?:text|txt|reply|send)\s+\w+\s+to\s*$"#,
         .caseInsensitive)
 
-    private static let codeNoun = rx(#"\b(?:"# + codeWord + #"|k[oó]d\w*|passcode|pin|otp|token)\b"#, .caseInsensitive)
+    private static let codeNoun = rx(
+        #"\b(?:"# + codeWord + #"|k[oó]d\w*|passcode|pin|otp|token)\b|"# + unspacedCodeNouns.joined(separator: "|"), .caseInsensitive)
     private static let pinLabel = rx(#"\bpin\s*[:=]?\s*$"#, .caseInsensitive)
     private static let bookingNumber = rx(
         #"\b(?:confirmation|booking|reservation|buchung|rezervacij\w*)(?:\s+(?:number|no\.?|nr\.?|code))?\s*[:#]\s*\d{6,}"#, .caseInsensitive)

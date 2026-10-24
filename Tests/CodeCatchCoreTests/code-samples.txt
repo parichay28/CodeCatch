@@ -98,6 +98,32 @@ NONE | Meet me at 1530 tomorrow
 NONE | Your order #482913 has shipped
 NONE | Your payment of €1234.50 was confirmed
 NONE | Call me at +1 202 555 0100 about the login
+NONE | Ihre Bestellung 123456 wurde bestätigt.
+NONE | Ihr Auftrag 123456 wurde bestätigt.
+NONE | Ihre Sendung 48291344 wurde bestätigt und ist unterwegs.
+NONE | Zahlung bestätigt: Rechnung 482913 über 49,90 EUR
+NONE | Ihr Termin am 12.11. wurde bestätigt. Buchungsnummer 482913
+NONE | Bestellung bestätigt. Ihre Kundennummer: 482913
+NONE | Votre commande 123456 est confirmée.
+NONE | Votre commande n° 123456 est confirmée.
+NONE | Réservation confirmée. Référence : 482913
+NONE | Paiement confirmé pour la facture 482913.
+NONE | Tu pedido 123456 ha sido confirmado.
+NONE | Reserva confirmada. Número de reserva: 482913
+NONE | Pago confirmado: factura 482913
+NONE | Seu pedido 123456 foi confirmado.
+NONE | Encomenda 482913 confirmada. Obrigado!
+NONE | Pagamento verificato: ordine 482913
+NONE | Ihre Lieferung wurde bestätigt. Paketnummer: 482913.
+NONE | ご注文番号\n482913\nQRコードを店頭で提示してください。
+NONE | クーポンコード\n482913\nお会計時にご提示ください。
+246810 | Bestätigen Sie Ihre Bestellung mit dem Code 246810.
+246810 | Le code de votre commande est 246810
+246810 | Usa el código 246810 para confirmar tu pedido.
+246810 | Ihre Bestätigungsnummer: 246810. Geben Sie diese Nummer ein, um sich anzumelden.
+246810 | Zum Login verwenden Sie bitte diese Authentifizierungsnummer: 246810.
+246810 | Bitte bestätigen Sie den Login. Ihre Sicherheitsnummer: 246810
+246810 | Ihre TAN-Nummer: 246810. Bestätigen Sie die Überweisung.
 NONE | Your verification code is ready at https://example.com/v/482913
 NONE | Security update © 2026
 NONE | *Registrant:*\n\nName: Example Person\n\nPostal Code: 00000\n\nCountry: XX
@@ -244,6 +270,11 @@ NONE | PayPal: Thanks for confirming your phone number. Log in or get the app to
 2468 | # 밤비 인증번호는 2468입니다.자동입력코드
 246810 | [Verification Code: 246810] This code is for signing up for your Kakao Account.
 246810 | 246810 คือรหัสยืนยันของคุณสำหรับ X
+246810 | 246810\n認証コードを入力してください
+246810 | 246810\nこれはあなたの認証コードです
+246810 | ウーバーコードは246810です。他の人に教えないでください。
+246810 | 246810\n这是您的验证码，请勿泄露。
+246810 | 246810\n인증번호를 입력해 주세요
 2468 | เบอร์ Anywheel รหัสยืนยันคือ 2468 โปรดใช้งานภายใน 5 นาที
 246810 | 【NNLink】Mã xác minh của bạn là 246810, có hiệu lực trong 30 phút, vui
 2468 | [QuickFox]Mã xác minh: 2468. Có giá trị trong 10 phút và không chia sẻ
