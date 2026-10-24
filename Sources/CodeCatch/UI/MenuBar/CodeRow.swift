@@ -203,6 +203,9 @@ struct CodeMenu: View {
             Divider()
         }
         Button("Clear") { model.dismiss(item) }
+        if !item.isLink, item.notCodeKey != nil {
+            Button("Not a Code") { model.markNotCode(item) }
+        }
         if !item.sender.isEmpty {
             Button("Ignore \(item.sender)") { model.ignore(item.sender) }
             if let domain = ServiceIdentity.ignorableDomain(of: item.sender) {

@@ -7,6 +7,7 @@ enum Prefs {
     static let hideFromCapture = "hideFromCapture", blurCodes = "blurCodes", showPreviews = "showPreviews"
     static let clearOnLock = "clearOnLock", clearedAt = "historyClearedAt"
     static let ignoredSenders = "ignoredSenders", dismissed = "dismissedMessages", vaultImportedAt = "vaultImportedAt"
+    static let notCodes = "notCodes"
     static let hotkeys = "hotkeys", welcomed = "welcomed"
     /// Never stored here: `AppModel.isOn` reads it from the Keychain, where a script can't turn it on.
     static let unlockWithMac = "unlockWithMac"

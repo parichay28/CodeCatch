@@ -473,6 +473,48 @@ private func monitoringMessage() -> IncomingMessage {
         _ = await stopped.next()
     }
 
+    /// "Not a Code" drops the wrong code and skips the next message like it (not even as a missed email),
+    /// lets the sender's real codes through, survives a relaunch without keeping message text, and undoes.
+    @Test func notACodeSkipsMessagesLikeItAndUndoes() throws {
+        let fixture = try MonitoringFixture()
+        defer { fixture.cleanUp() }
+        func mail(_ text: String, id: String) -> IncomingMessage {
+            IncomingMessage(
+                text: text, senderName: "Clinic", senderID: "noreply@clinic.example", sourceKey: "test-mail",
+                sourceLabel: "Test", date: Date().addingTimeInterval(-60), isMail: true, messageID: id)
+        }
+        fixture.model.ingest(mail("Appointment confirmed for 1430 on Tuesday.", id: "1"))
+        #expect(fixture.model.items.map(\.code) == ["1430"])
+        fixture.model.markNotCode(fixture.model.items[0])
+        #expect(fixture.model.items.isEmpty)
+
+        fixture.model.ingest(mail("Appointment confirmed for 1515 on Tuesday.", id: "2"))
+        #expect(fixture.model.items.isEmpty)
+        #expect(fixture.model.recovery.entries.isEmpty)
+        fixture.model.ingest(mail("Your code is 482913.", id: "3"))
+        #expect(fixture.model.items.map(\.code) == ["482913"])
+
+        let relaunched = fixture.makeModel()
+        #expect(relaunched.notCodes.map(\.sender) == ["noreply@clinic.example"])
+        let stored = String(decoding: fixture.defaults.data(forKey: Prefs.notCodes) ?? Data(), as: UTF8.self).lowercased()
+        #expect(!stored.isEmpty && !stored.contains("appointment") && !stored.contains("tuesday"))
+        relaunched.forgetNotCodes(Set(relaunched.notCodes.map(\.key)))
+        #expect(relaunched.notCodes.isEmpty)
+        relaunched.ingest(mail("Appointment confirmed for 1515 on Tuesday.", id: "4"))
+        #expect(relaunched.items.map(\.code) == ["1515"])
+
+        // Never for a test code (marking one would silence Show Test Code), nor a row left with only its link.
+        relaunched.showTestCode()
+        let test = try #require(relaunched.items.first { $0.origin == .test })
+        relaunched.markNotCode(test)
+        #expect(relaunched.notCodes.isEmpty && relaunched.items.contains { $0.id == test.id })
+        relaunched.ingest(monitoringMessage())
+        relaunched.set(Prefs.receivedCodes, on: false)
+        let link = try #require(relaunched.items.first { $0.link != nil })
+        relaunched.markNotCode(link)
+        #expect(relaunched.notCodes.isEmpty && relaunched.items.contains { $0.id == link.id })
+    }
+
     /// Prevents a code being typed scrambled with another, after permission was withdrawn, or into a held shortcut.
     @Test func keyTyperPressesWholeTextsInOrderAndOnlyWhileStillAllowed() async {
         final class Recorder: @unchecked Sendable {

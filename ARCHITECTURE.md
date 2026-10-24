@@ -33,7 +33,9 @@ Every source delivers `IncomingMessage` to `AppModel.ingest` for extraction,
 deduplication, history limits and announcement decisions.
 
 Received codes and recovery messages stay in memory. Dismissal identifiers,
-source account configuration and preferences use UserDefaults. `Prefs` supplies
+source account configuration and preferences use UserDefaults. So do "Not a
+Code" rules: the sender and a hash of the line the number stood on, digits
+masked, never the message text (`NotCode.swift`). `Prefs` supplies
 defaults and the history limit; model, monitor, search and account persistence
 must use the same injected store. Tests must not fall back to `.standard`.
 

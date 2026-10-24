@@ -24,6 +24,8 @@ in any browser or app.
   cleared after 90 seconds.
 - **Shows a small banner** that never takes focus from what you're typing.
 - **Keeps recent codes in the menu bar.** Click one to copy it.
+- **Learns what isn't a code.** Right-click a wrong one and choose **Not a
+  Code**. The sender's real codes still come through.
 - **Handles sign-in and password reset links.** It warns you when a link leads
   to a different site than the sender's, and never opens one by itself.
 - **Reads Messages and mail:** iMessage, forwarded SMS, the Mail app, Gmail,

@@ -11,20 +11,31 @@ public enum CodeExtractor {
         matches(keyword, text)
     }
 
-    public static func code(in text: String) -> String? {
+    /// A code, and the text it was read from (as cleaned below) with the code as "#": the lines that
+    /// tell one kind of message from another (what "Not a Code" remembers).
+    public struct Detection: Equatable, Sendable {
+        public let code: String
+        public let context: String
+    }
+
+    public static func code(in text: String) -> String? { detect(in: text)?.code }
+
+    public static func detect(in text: String) -> Detection? {
         // An origin-bound SMS ("@example.com #482913") names its code for machines: trust it.
         // Read before cleaning, which drops "@www.example.com" with the other addresses.
         if let m = origin.firstMatch(in: text, range: NSRange(location: 0, length: (text as NSString).length)),
             m.range(at: 2).location != NSNotFound
         {
-            return (text as NSString).substring(with: m.range(at: 2))
+            // The whole text as read below, since the footer looks the same on every message the site sends.
+            let code = (text as NSString).substring(with: m.range(at: 2))
+            return Detection(code: code, context: maskingCopies(of: code, in: clean(text)))
         }
         let text = clean(text)
         let ns = text as NSString
         let keywords = keyword.matches(in: text, range: NSRange(location: 0, length: ns.length)).map(\.range)
         guard !keywords.isEmpty else { return nil }
 
-        var best: (code: String, score: Double)?
+        var best: (code: String, score: Double, range: NSRange, context: NSRange)?
         for (regex, isNumeric) in [(numeric, true), (alphanumeric, false)] {
             for match in regex.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
                 let range = match.range(at: 1)
@@ -87,10 +98,23 @@ public enum CodeExtractor {
                 if matches(referenceLabel, String(before)) { score -= 5 }
                 if introduced { score += 1.5 }
                 if alone { score += 2 }
-                if score >= 4, score > best?.score ?? 0 { best = (code, score) }
+                if score >= 4, score > best?.score ?? 0 { best = (code, score, range, context) }
             }
         }
-        return best?.code
+        return best.map { Detection(code: $0.code, context: maskingCopies(of: $0.code, in: masking($0.range, in: $0.context, of: ns))) }
+    }
+
+    /// `text` with every copy of `code` that stands as its own token written as "#": not the same digits
+    /// inside a longer number ("1430" in 1143099), but right after Chinese text ("预约码为AB12CD") it counts.
+    private static func maskingCopies(of code: String, in text: String) -> String {
+        let copy = #"(?<![A-Za-z0-9])"# + NSRegularExpression.escapedPattern(for: code) + #"(?![A-Za-z0-9])"#
+        return text.replacingOccurrences(of: copy, with: "#", options: [.regularExpression, .caseInsensitive])
+    }
+
+    /// `context` of `text` with `code` written as "#".
+    private static func masking(_ code: NSRange, in context: NSRange, of text: NSString) -> String {
+        text.substring(with: NSRange(location: context.location, length: code.location - context.location)) + "#"
+            + text.substring(with: NSRange(location: code.upperBound, length: context.upperBound - code.upperBound))
     }
 
     /// How long the text says the code stays valid ("expires in 10 minutes", "velja 3 minute",

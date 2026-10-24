@@ -38,6 +38,8 @@ struct CodeItem: Identifiable, Equatable {
     /// Where the email itself can be opened; see `AppModel.source(of:)`.
     var internetMessageID: String? = nil
     var webURL: URL? = nil
+    /// What "Not a Code" on this item remembers (`notCodeKey(for:from:)`); nil without a received code.
+    var notCodeKey: String? = nil
 
     var lifetime: TimeInterval { expires.timeIntervalSince(received) }
     /// The countdown shows only in the last 10 minutes: a ring for a 24-hour link is noise.

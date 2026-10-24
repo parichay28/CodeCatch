@@ -8,6 +8,7 @@ struct SourcesTab: View {
     @Local private var editing: MailAccount?
     @Local private var adding = false
     @Local private var ignoring = false
+    @Local private var notCoding = false
     #if DEBUG
         @Local private var importResult: String?
     #endif
@@ -34,6 +35,13 @@ struct SourcesTab: View {
                     info: "Codes and links from these senders are skipped. To ignore a sender, right-click one of their codes."
                 ) {
                     Button("Edit…") { ignoring = true }
+                }
+                SettingRow(
+                    symbol: "xmark.seal", color: .gray, title: "Not a Code", subtitle: notCodeSummary,
+                    info: "No code is read from messages like these. Their sender's other codes still come through. "
+                        + "To add one, right-click a wrongly caught code and choose Not a Code."
+                ) {
+                    Button("Edit…") { notCoding = true }
                 }
             } header: {
                 Text("What to Catch")
@@ -139,6 +147,7 @@ struct SourcesTab: View {
         .sheet(isPresented: $bitwarden) { BitwardenSheet() }
         .sheet(isPresented: $adding) { AddAccountSheet { editing = $0 } }
         .sheet(isPresented: $ignoring) { IgnoredSendersSheet() }
+        .sheet(isPresented: $notCoding) { NotCodesSheet() }
         .onReceive(model.$editAccountRequest) { id in
             guard let id else { return }
             model.editAccountRequest = nil
@@ -151,6 +160,14 @@ struct SourcesTab: View {
         case 0: "None"
         case 1: "1 sender"
         case let count: "\(count) senders"
+        }
+    }
+
+    private var notCodeSummary: String {
+        switch model.notCodes.count {
+        case 0: "None"
+        case 1: "1 kind of message"
+        case let count: "\(count) kinds of message"
         }
     }
 

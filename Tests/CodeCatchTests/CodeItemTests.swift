@@ -27,6 +27,45 @@ private func message(_ text: String, at date: Date) -> IncomingMessage {
     #expect(code.dismissKey == CodeItem(message("Your code is 482913", at: date), code: "482913", link: nil).dismissKey)
 }
 
+/// "Not a Code" must cover the next message of the same kind from that sender, whatever its numbers, and
+/// never that sender's real codes, another sender's messages, or a code introduced in other words.
+@Test func notACodeMatchesOnlyTheSameKindOfMessageFromTheSameSender() throws {
+    func key(_ text: String, from sender: String = "+4915550100") throws -> String {
+        let message = IncomingMessage(
+            text: text, senderName: "", senderID: sender, sourceKey: "test", sourceLabel: "Test", date: Date(), isMail: sender.contains("@"))
+        return CodeItem.notCodeKey(for: try #require(CodeExtractor.detect(in: text), "\(text)"), from: message)
+    }
+    let marked = try key("Appointment confirmed for 1430 on Tuesday.")
+    #expect(try key("Appointment confirmed for 1515 on Tuesday.") == marked)
+    #expect(try key("Your code is 482913.") != marked)
+    #expect(try key("Appointment confirmed for 1430 on Tuesday.", from: "+4915550199") != marked)
+    // The number the extractor chose, not the first place its digits appear ("1430" inside 1143099).
+    #expect(try key("Ref: 1143099\nAppointment confirmed for 1430 on Tuesday.") == key("Ref: 1777799\nAppointment confirmed for 1515 on Tuesday."))
+    #expect(try key("Ref: 14829139\nYour code is 482913.") != key("Ref: 1143099\nAppointment confirmed for 1430 on Tuesday."))
+    // A number alone on its line is told apart by the line above it.
+    #expect(try key("Appointment confirmation:\n1430") != key("Your sign-in code:\n482913"))
+    // Read as the extractor reads it: without direction marks.
+    #expect(try key("Your code: AB\u{200E}12CD") == key("Your code: EF\u{200E}34GH"))
+    // A site-bound footer ("@site #code") reads the same on every message: the text above tells them apart.
+    #expect(try key("Appointment confirmed for 1430.\n@clinic.example #1430") != key("Your sign-in code is 482913.\n@clinic.example #482913"))
+    #expect(try key("Your code is 1430\u{200E}.\n@clinic.example #1430") == key("Your code is 1515.\n@clinic.example #1515"))
+    // ...whatever its per-message link or letter code.
+    #expect(
+        try key("Appointment confirmed for 1430. Details: https://clinic.example/a/Xy7Kq\n@clinic.example #1430")
+            == key("Appointment confirmed for 1515. Details: https://clinic.example/a/Pz8Lm\n@clinic.example #1515"))
+    #expect(try key("Booking confirmed: AB12CD.\n@clinic.example #AB12CD") == key("Booking confirmed: EF34GH.\n@clinic.example #EF34GH"))
+    #expect(try key("预约已确认，预约码为AB12CD。\n@clinic.example #AB12CD") == key("预约已确认，预约码为EF34GH。\n@clinic.example #EF34GH"))
+    #expect(
+        try key("Appointment confirmed for 1430. Ref: 1143099.\n@clinic.example #1430")
+            == key("Appointment confirmed for 1515. Ref: 1777799.\n@clinic.example #1515"))
+    // Mail by domain: a shop writes from more than one address.
+    #expect(
+        try key("Appointment confirmed for 1430 on Tuesday.", from: "bookings@clinic.example")
+            == key("Appointment confirmed for 1515 on Tuesday.", from: "noreply@clinic.example"))
+    // Text without spaces keeps its words: only the digits are masked.
+    #expect(try key("【京东】验证码：548393，您正在新设备上登录。") != key("【京东】确认订单548393已发货，订单验证码"))
+}
+
 @Test(arguments: [(90.0, false), (30.0, false), (29.0, true), (-1.0, true)])
 func expiredCodesDoNotTriggerAutomaticCopyWhileClockSkewStillWorks(age: TimeInterval, expected: Bool) {
     let now = Date(timeIntervalSince1970: 1_700_000_000)
@@ -63,6 +102,31 @@ func topCardShowsOnlyARecentLiveItem(text: String, age: TimeInterval, expected: 
         pasteboard.clearContents()
         pasteboard.setString("unrelated", forType: .string)
         #expect(!Clipboard.holds(current, pasteboard: pasteboard))
+    }
+
+    /// "Not a Code" must not wipe a clipboard that has moved on from the item's own code: not the same row's
+    /// sign-in link, not something copied elsewhere, not another item's code.
+    @Test @MainActor func notACodeEmptiesOnlyTheClipboardThatStillHoldsTheItemsOwnCode() throws {
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
+        let link = try #require(URL(string: "https://example.com/login"))
+        let item = CodeItem(message("Your code is 482913", at: date), code: "482913", link: link)
+        let other = CodeItem(message("Your code is 771024", at: date), code: "771024", link: nil)
+        let pasteboard = NSPasteboard.withUniqueName()
+        defer { pasteboard.releaseGlobally() }
+        func clear(after copy: () -> Void) -> String? {
+            Clipboard.copy(item.code, id: item.id, pasteboard: pasteboard)
+            copy()
+            Clipboard.clearIfHolds(item, pasteboard: pasteboard)
+            return pasteboard.string(forType: .string)
+        }
+        #expect(clear(after: {}) == nil)
+        #expect(clear(after: { Clipboard.copy(link.absoluteString, id: item.id, pasteboard: pasteboard) }) == link.absoluteString)
+        #expect(
+            clear(after: {
+                pasteboard.clearContents()
+                pasteboard.setString("unrelated", forType: .string)
+            }) == "unrelated")
+        #expect(clear(after: { Clipboard.copy(other.code, id: other.id, pasteboard: pasteboard) }) == other.code)
     }
 }
 

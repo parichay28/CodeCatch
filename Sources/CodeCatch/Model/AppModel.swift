@@ -25,6 +25,10 @@ final class AppModel: ObservableObject {
     @Published private(set) var ignoredSenders: [String] {
         didSet { defaults.set(ignoredSenders, forKey: Prefs.ignoredSenders) }
     }
+    /// Kinds of message marked "Not a Code", oldest first.
+    @Published private(set) var notCodes: [NotCodeRule] {
+        didSet { defaults.set(try? JSONEncoder().encode(notCodes), forKey: Prefs.notCodes) }
+    }
     let vaultSession: VaultSession
     let monitor: SourceMonitor
     let search: CodeSearch
@@ -79,6 +83,7 @@ final class AppModel: ObservableObject {
         self.accounts = accounts ?? MailAccount.load(from: defaults)
         Prefs.register(in: defaults)
         ignoredSenders = defaults.stringArray(forKey: Prefs.ignoredSenders) ?? []
+        notCodes = defaults.data(forKey: Prefs.notCodes).flatMap { try? JSONDecoder().decode([NotCodeRule].self, from: $0) } ?? []
         let policy = unlockPolicy ?? VaultStorage.unlockPolicy()
         self.unlockPolicy = policy
         self.vaultSession = vaultSession ?? VaultStorage.session(defaults: defaults, unlockPolicy: policy)
@@ -222,7 +227,10 @@ final class AppModel: ObservableObject {
 
     private func filtered(_ item: CodeItem) -> CodeItem? {
         var item = item
-        if !isOn(Prefs.receivedCodes) { item.code = "" }
+        if !isOn(Prefs.receivedCodes) {
+            item.code = ""
+            item.notCodeKey = nil
+        }
         if !isOn(item.linkSetting) { item.link = nil }
         return item.code.isEmpty && item.link == nil ? nil : item
     }
@@ -272,15 +280,21 @@ final class AppModel: ObservableObject {
         guard age < history, message.date > clearedAt,
             !isIgnored(message.senderID)
         else { return }
-        let code = isOn(Prefs.receivedCodes) ? CodeExtractor.code(in: message.fullText) : nil
+        let detection = isOn(Prefs.receivedCodes) ? CodeExtractor.detect(in: message.fullText) : nil
+        let notCodeKey = detection.map { CodeItem.notCodeKey(for: $0, from: message) }
+        // Marked "Not a Code": no code, and not a missed one for Recent Emails either.
+        let notCode = notCodeKey.map { key in notCodes.contains { $0.key == key } } ?? false
+        let code = notCode ? nil : detection?.code
         let detectedLink = message.isMail ? SignInLink.find(in: message.links, subject: message.subject ?? "") : nil
         let resets = detectedLink?.kind == .passwordReset
         let link = isOn(resets ? Prefs.resetLinks : Prefs.signInLinks) ? detectedLink?.url : nil
-        let item = CodeItem(message, code: code, link: link, resetsPassword: resets)
+        var item = CodeItem(message, code: code, link: link, resetsPassword: resets)
+        // Never for a test code: marking one would silence Show Test Code.
+        if code != nil, item.origin != .test { item.notCodeKey = notCodeKey }
         guard !dismissed.contains(item.dismissKey) else { return }
         if code != nil || detectedLink != nil { recovery.remove(messageKey: message.dismissKey) }
         guard code != nil || link != nil else {
-            if isOn(Prefs.receivedCodes), detectedLink == nil { recovery.record(message) }
+            if isOn(Prefs.receivedCodes), detectedLink == nil, !notCode { recovery.record(message) }
             return
         }
         monitor.receivedCode(sourceKey: message.sourceKey, date: message.date)
@@ -513,6 +527,31 @@ final class AppModel: ObservableObject {
     }
 
     private var dismissed: [String] { defaults.stringArray(forKey: Prefs.dismissed) ?? [] }
+
+    /// "Not a Code": drops this code, and the codes of messages like it, now and from now on. A sign-in
+    /// link in the same message stays.
+    func markNotCode(_ item: CodeItem) {
+        guard !item.isLink, let key = item.notCodeKey else { return }
+        if !notCodes.contains(where: { $0.key == key }) {
+            notCodes = Array((notCodes + [NotCodeRule(key: key, sender: item.sender, added: Date())]).suffix(200))
+        }
+        for item in items where item.notCodeKey == key { Clipboard.clearIfHolds(item) }
+        items = items.compactMap { item in
+            guard item.notCodeKey == key else { return item }
+            guard item.link != nil else { return nil }
+            var link = item
+            link.code = ""
+            link.notCodeKey = nil
+            return link
+        }
+    }
+
+    /// Undoes "Not a Code": reads the sources again so those messages' codes come back.
+    func forgetNotCodes(_ keys: Set<String>) {
+        notCodes.removeAll { keys.contains($0.key) }
+        restartMessages()
+        restartMail()
+    }
 
     // MARK: - Bitwarden
 

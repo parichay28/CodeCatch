@@ -27,6 +27,11 @@ enum Clipboard {
         if copied?.change == NSPasteboard.general.changeCount { NSPasteboard.general.clearContents() }
     }
 
+    /// Empties the clipboard if it still holds `item`'s own value: its code, not a link copied from its row.
+    static func clearIfHolds(_ item: CodeItem, pasteboard pb: NSPasteboard = .general) {
+        if holds(item, pasteboard: pb) { pb.clearContents() }
+    }
+
     /// The last copy was for `id`, and nothing has replaced or cleared it since.
     static func holds(_ id: UUID, pasteboard pb: NSPasteboard = .general) -> Bool {
         copied?.id == id && copied?.change == pb.changeCount
