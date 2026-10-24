@@ -420,3 +420,285 @@ ABCDE | YOUR CODE IS ABCDE USE IT NOW
 2468 | Booking.com\nSign in to your account\nPIN: 2468
 A2BC4D | Your code: A2BC4D\nSave up to 20% on your next order
 NONE | New API token created\nNEW API TOKEN CREATED\n\nHey Uros G ,\n\nYou just created a new API token with the following permissions:\n\n* connections:read\n* scenarios:write\n\nTo manage your tokens, click here.
+NONE | Paket [009232513] wurde im Verteilerzentrum angehalten. Verfolgen Sie Ihre Sendung hier: *Link*
+NONE | Ihre Bestellung # 276513 wird in Kurze eintreffen. Fortschritt verfolgen: *Link*
+NONE | Es 803 wurde eine neue Bestellung VYIQCE auf DHL gesendet. Informationen: *Link* p
+NONE | Lieferproblem. Folgen Sie dem Link, um einen neuen Liefertermin zu vereinbaren: *Link* xfey7m
+NONE | Ihre [mw] Lieferung ist lr <r> angekommen: *Link* {g2y} lk
+NONE | Neue Lieferbeschränkungen: Wir * konnten Ihr Paket nicht zustellen *Link* '32m'
+NONE | Verspätete Lieferung Um Ihr Paket zu erhalten Sie müssen eine Zollsteuer von 1,99 EURO zahlen *Link*
+NONE | [Deutsche Post]: Sehr geehrter Kunde, Ihr Paket konnte am 24/12/2022 nicht zugestellt werden, da die Zollgebühren (0,99€) nicht bezahlt wurden. Weitere Informationen finden Sie hier: *Link*
+NONE | DHL: Leider wurde Ihre Sendung vorübergehend vom Zoll zurückgehalten. Bitte zahlen Sie die Zollgebühren in Höhe von 3,84 Euro auf *Link*, um die Lieferung fortzusetzen.
+NONE | Ihr DHL-Paket ist soeben in Deutschland angekommen. Auf Ihr Paket fallen Steuern an (3.99E). Regulieren Sie sich sofort: *Link*
+NONE | DEUTSCHEPOST: Ihr Paket DE14000131 hatte ein Problem und erfordert eine zusätzliche Gebühr, um die Zustellung zu gewährleisten, füllen Sie bitte das Formular: *Link*
+NONE | DHL: Ihr Paket 20394XNDHFG345R unterliegt einer Zollgebühr (2.99E), die Sie bezahlen müssen unter: *Link*
+NONE | DHL: Für Ihr Paket Nr.20394JNDHFG345R wird eine Zollgebühr (2,99€) erhoben, die Sie bezahlen können unter: *Link*
+NONE | DeutschePost: Ihr Paket ZPR578413 bleibt aufgrund eines Lieferproblems in unserem Lager hängen. Verfolgen Sie die Show über: *Link*
+NONE | Bitte bestätigen Sie Ihre Angaben unter *Link* für die Paketnummer: DECD9431. Zollgebühren müssen bezahlt werden
+NONE | My Hermes : Für Ihr Paket CJA982176 fallen Zollgebühren an, Folgen Sie dem beigefügten Link, um die Situation zu regulieren : *Link*
+NONE | DeutschePost: Sie haben noch 24 Stunden Zeit, um die zusätzlichen Versandkosten (1,63€) zu bezahlen: *Link*
+NONE | UPS: Paket BY7303J0038KY8 ist zollpflichtig (2,99€). Besuchen Sie *Link* um die Lieferung zu bestätigen.
+NONE | Das DHL-Paket ist im Lager eingetroffen und kann aufgrund unvollstandiger Adressangaben nicht zugestellt werden. Bitte bestatigen Sie Ihre Adresse im Link innerhalb von 12 Stunden. *Link* (Bitte antworten Sie mit Y, beenden Sie dann die SMS, offnen Sie den SMS-Aktivierungslink erneut oder kopieren Sie den Link in den Safari-Browser und offnen Sie ihn) Das Team von DE Postal wunscht Ihnen einen schonen Tag
+NONE | Bitte denken Sie daran, dass Ihr Paket aufgrund einer falschen Lieferadresse nicht versendet werden kann. Klicken Sie auf: *Link* Aktualisieren Sie Ihre Adresse. Die Ware wird am 10.November geliefert!
+NONE | DHL: Da die Lieferadresse nicht klar ist, wirdIhr Paket nicht geliefert. Ihr Paket ist in unser Operation Centerzurückgekehrt. Bitte aktualisieren Sie Ihre Adresse im Link, nachdem Sie die Nachricht gelesen haben, wirwerden wieder in 2024/7/9 versenden. URL *Link* Nochmals vielen Dank für Ihre Mitarbeit. DHL. Postdienstzentrum: *Link*
+NONE | [DHL] – Benachrichtigung über fehlgeschlagene Zustellung Ihr Paket wurde aufgrund einer unklaren Lieferadresse nicht zugestellt Ihr Paket wurde an unser Fulfillment-Center zurückgeschickt Bitte aktualisieren Sie Ihre Adresse und wir versenden erneut am 05/06 *Link* (Antworten Sie mit Y und öffnen Sie diese Nachricht erneut, um auf den Link zu klicken, oder kopieren sie in Ihren Browser.)
+NONE | Hermes® am 22.07. haben wir versucht, Ihr Hermes Paket zuzustellen. Leider konnten wir Sie persönlich nicht erreichen und das Paket benötigt eine Unterschrift bei der Übergabe. Deshalb konnte die Zustellung nicht abgeschlossen werden. Bitte vereinbaren Sie jetzt einen neuen Zustelltermin. Hier neuen Termin auswählen: *Link* Sie haben folgende Möglichkeiten: Einen neuen Wunschtag und/oder Wunschzeiten für die Zustellung auswählen. Das Paket an eine Hermes Abholstation umleiten lassen.
+NONE | Ihre offene Forderung mit der Nummer R110223 wurde trotz mehrerer Mahnungen nicht beglichen. Am 1 Juni 2022 wird der Gerichtsvollzieher die vorsorgliche Pfändung Ihres Hausrats vornehmen. Sie können das Pfändungsverfahren vermeiden, indem Sie den vollen Betrag sofort über Ihren Zahlungslink bezahlen: https:// bom .so/zahlung-de
+NONE | Wir haben einen Postruecklaeufer AZ:9579197968 erhalten. Bitte melden Sie sich dringend bei uns unter 0 21 33 / 24 63 - xxx. MfG coeo Inkasso
+NONE | Pfändungsgericht HH mit ihrer Akt.HBR-220 liegt ein Pfändungsbeschluss vor.Um diesen Beschluss aufzuheben nehmen Sie Kontakt mit Sachbearbeiter auf.040675xxxxx
+NONE | Um Ihre persönliche Einkommensteuer zurückzuerhalten, müssen Sie Ihr Konto verifizieren, damit wir den vollen Betrag von 268,35 € auf das richtige Konto überweisen können. Für die Authentifizierung ist es wichtig, dass Sie eine einmalige Überprüfung durchführen. Sie erhalten dann den Betrag innerhalb von 3 Werktagen auf Ihrem Konto. Über den Link https:// ihre-rueckzahlung .digial/index5 .php verifizieren
+NONE | FINANZAMT Sie haben einen ausstehenden Betrag (FZ100329831) Bezahlen Sie bis 11.06.2024, um zusätzliche Kosten zu vermeiden: Finanzamt24 .info
+NONE | [BMF] Ihre FinanzOnline-ID läuft am 03.03.2026 ab. Ohne Verlängerung kann Ihre Steuererklärung nicht erfolgen: https:// finanzonline-vgbmf .net/
+NONE | Sie haben soeben 1.500 EUR mit Ihre(r) Kreditkarte Online bei Amazon bezahlt, ist diese Transaktion Ihnen nicht bekannt, dann nehmen Sie bitte sofort Kontakt mit unserem Support auf https:// vrb-kundenlogin.click/ B235
+NONE | Um die Sperrung Ihres Kontos zu vermeiden, ist es erforderlich unsere neue Sicherheits-App auf Ihrem Smartphone zu installieren. http:// postbank. id471655 .com
+NONE | Hallo [Vorname], bitte steigen Sie bis spätestens 28.05.2022 auf pushTAN 2.0 um. Klicken Sie hier https:// push2.0-spk .de/?i=91968&h=cmUTexYf Ihre Sparkasse
+NONE | Commerzbank: Laut unserem System gab es auf Ihrem Konto unregelmäßige Aktivitäten. Aus diesem Grund wurde Ihr photoTAN-Verfahren eingeschränkt. Wir bitetn Sie daher, Ihr Verfahren über den unten stehenden Link wiederherzustellen. https:// commerzbank-phototan8922 .web .app/ Ihre Commerzbank AG
+NONE | Comdirect: Laut unserem System wurde Ihre photoTAN-App vorübergehend eingeschränkt. Um Ihr Konto wieder wie gewohnt nutzen zu können, bitten wir Sie, die Einschränkungen unter folgendem Link aufzuheben. https:// comdirect-photoTAN-2873c .web .app/ Comdirect - eine Marke der Commerzbank AG
+NONE | VR: Ihr Konto wurde gesperrt! Aktualisieren Sie Ihre Daten um die Sperrung aufzuheben. Das tun Sie hier https:// volksbank .88234 .de/volksbank
+NONE | Die PhotoTAN ist nicht mehr gültig. Bitte nutzen Sie Commerz .265268 .com für das aktuelle Update.
+NONE | Lieber Sparkassen Kunde, Ihr Zugriff auf die pushTAN-App endet am 23.22.2023. Bitte Legitimieren Sie sich erneut unter: https:// spk-girokonto .de
+NONE | Ihr SantanderSign läuft am 12.10.23 aus, bitte erneuern Sie dieses unter: https:// santander .de-sicherheit .in
+NONE | [S-IDENTITY] Ihre S-Identity Registrierung läuft am 214-01-2023 ab. Bitte verlangern Sie ihre Legitimation unter: https:// sparkasse-at .online/
+NONE | DKB Ihre Karte würde aufgrund seltsamer Aktivitäten gesperrt.Bitte bestätigen Sie Ihr Konto erneut: https:// t .co/b8nmVfOEBn
+NONE | Deutsche Post: Die Zustellung Ihres Pakets XV913906DE ist derzeit beim Zollzentrum gesperrt. Bitte Zollgebühren beachten (2,99 Euro). Bitte besuchen Sie paket expresslieferung de
+NONE | Ihr DHL Paket ist soeben in Deutschland angekommen. Auf Ihr Paket werden Steuern erhoben 3.99 E). Besuchen Sie secure dhlexpress com
+NONE | Neue Versandaktualisierung : Ihr Kundennummer. (11245183) Vielen Dank
+NONE | Ihre Paketzustellungsnachricht Nr#34632900-371
+1234AB | Hallo! Ihre Sendung wurde verzollt. Bitte gehen Sie zu https://www.dpd.easy-import.de/?hawb=12345678901234 und melden Sie sich mit PIN-Code: 1234AB an, um die Zahlung vorzunehmen. EASY-IMPORT
+NONE | Colissimo: Votre colis CH619299386 a un souci lors de son acheminement. Veuillez consulter le lien: https://colissimo-app.com
+NONE | CoIissimo: Votre colis 6A76345170828 a un souci lors de son acheminement. Pour garantir la livraison, consulter le lien: https://pickup-colis.net
+NONE | Bonjour votre carton était trop volumineux pour la boite aux lettres ce matin. Merci de fixer un autre rdv via https://planifications-jour.com/gestion/1C6358
+NONE | mondial replay la livraison de votre colis FR4KL651ZPJ est toujours en attente d'instruction de votre part veuillez confirmer le règlement des frais de livraison
+NONE | Bonjour c'est le livreur votre colis ne rentre pas dans la boite aux lettres merci de choisir un nouveau créneau sur https://ma-nouvelleconsigne.com/suivi/99541
+NONE | bonjour c'est le livreur, je suis passé ce matin mais votre colis ne rentrait pas dans la boite aux lettres, vous préférez en point relais ou je repasse demain?\n\nOk alors choisissez ici un nouveau créneau ou point relais : https://prio-depot.com/24395672 Sans ca je ne peux rien faire, merci et bonne journée
+NONE | Bonjour vous etes chez vous ?\n\nc'est le livreur, je suis passé ce matin mais votre colis ne rentrait pas dans la boite aux lettres, vous préférez en point relais ou je repasse demain?\n\nOk alors choisissez ici votre nouveau créneau ou point relais : https://mlr.consignataire-prb.com/56192847\nSans ca je peux rien faire, merci et bonne journée
+NONE | Bonjour, je n'ai pas réussi a déposer votre colis dans la boite aux lettres, merci de sélectionner un créneau sur https://colissimo-instruction.com
+NONE | Bonjour c'est le coursier votre colis ne rentrait pas dans la boite aux lettres merci de choisir un autre créneau ou relais via https://distribution-retard.com
+NONE | Bonjour, c'est le livreur votre colis ne rentrait pas dans la boite aux lettres merci de choisir un point relais sur : https://mondialrelay-help.com
+NONE | Bonjour, c'est le livreur Mondial Relay.\nVotre colis ne rentrait pas dans votre boîte aux lettres/locker. Veuillez reprogrammer votre livraison via :\nhttps://my-livraison-mondialrelay.com
+NONE | c'est le livreur j'ai un colis au nom de M. X qui ne rentrait pas dans la boite aux lettres veuillez choisir un relais https://mondial-trajet.com
+NONE | Chronopost : votre colis a rencontré une erreur lors de sa livraison. Pour confirmer l’acheminement de celui-ci, rendez-vous sur : https://chronoinfo.net/
+NONE | Chronopost : votre colis a subi un problème, veuillez régulariser les informations de livraison sur notre site : servicechronopost.net
+NONE | CORREOS, Estimado cliente, su paquete no se ha podido entregar el 07/06 porque no se han pagado las tasas de aduana (2.64€), Siga las instrucciones :
+NONE | SERVICIO CORREOS, Su paquete no se ha podido entregar porque no se han pagado las tasas de aduanas (1,79€) puede pagar en el siguiente enlace: [enlace fraudulento]
+NONE | CORREOS EXPRESS: Su paquete no ha podido ser entregado; no se han cobrado las tasas de aduana (1,98€). Puede pagar en este enlace: [enlace fraudulento]
+NONE | Se requiere el pago del impuesto de importación paquete (2,64€) sigue pendiente para CORREOS EXPRESS Pague con seguridad en [enlace fraudulento]
+NONE | [Correos] Su paquete no se ha podido entregar, no se han cobrado las tasas aduana (1,79€). Puede pagar en este enlace: [URL maliciosa]
+NONE | La entrega esta en espera porque su envio no tiene numero de casa. Actualice lo antes posible: https://is.gd/LKbU0j
+NONE | Cargo por 2890 EUR pre-aprobado por defecto. Si no ha sido usted procede a cancelarla inmediatamente aquí: [URL Maliciosa]
+NONE | Apartir del 27 06 no puedes utilizar su cuenta. Tienes que activar el nuevo sistema de seguridad web. Activa ahora: [URL Maliciosa]
+NONE | Compra aceptada por importe de 2890EUR, si no reconoce este movimiento, verifique inmediatamente: [URL Maliciosa]
+NONE | Caixabank: A partir del 26/06/2023, no podrá utilizar tarjeta si no ha activado el nuevo sistema garantiza mayor seguridad en sus operaciones Activa ahora para leer: [URL Maliciosa]
+NONE | Se ha realizado un cargo de 332.67 EUR. Si no reconoce esta actividad, verifique inmediatamente. [URL Maliciosa]
+NONE | Aun no ha recibido el reembolso anual de impuestos para 2022-2023. Reclama tu devolución de 431,78 euros en [URL maliciosa]
+NONE | Identificada incidencia grave en su declaracion. Posible sanción 1059.75 EUR envie la documentacion necesario inmediatamente: [URL Maliciosa]
+NONE | DHL: Hola, su paquete no ha podido ser entregado, se le cobrarán unos gastos de aduana de 2,99 euros. Por favor, abónelos antes de devolver el paquete al remitente: [URL fraudulenta]
+NONE | El 18/01 a las 15:00 se ha detectado una transferencia inmediata por alto importe. Solicite una verificación inmediata: [URL fraudulenta]
+NONE | Se ha realizado un cargo por importe de 1892.32 EUR; si no reconoce dicha acción, verifique inmediatamente: [URL fraudulenta]
+NONE | A partir del 23/01/2024 no podrá utilizar su operativa, es necesario validar su identidad. Siga los pasos aquí: [URL fraudulenta]
+NONE | Banco Sabadell: Estimado cliente, Su cuenta bancaria quedara suspendida el día 18/01/2024 por favor actualice sus datos: [URL fraudulenta]
+NONE | Notificación de envío de DHL 6540674221
+NONE | [destinatario] - Tienes (1) paquete esperando ser entregado . Usa tu código para rastrearlo y recibirlo ___. ID #9258.
+NONE | {[destinatario]}:Tiene (1) 퐩퐚퐪퐮퐞퐭퐞 pendiente de entrega_ID: 1081101.
+NONE | DGT: Dispone de 24 horas restantes para pagar su multa del 13/06/2024. Consulte en el siguiente enlace:
+NONE | Sede Electronica DGT. Tiene una multa pendiente de pago con fecha de caducidad 17/06/2024. Verifique su identidad y método de pago:
+NONE | DGT: Tienes un retraso en el pago de una infracción de trafico, último recordatorio antes del aumento. Referencia del archivo:108470 Consultar mi expediente de infracción a través: [URL]
+NONE | La DGT notifica una multa de 35 euros; se requiere el pago en las proximas 24 horas para evitar posibles recargos. Accede al enlace: [URL]:
+NONE | [DGT]: Multa pendiente. Pague antes del 02/11/2024 para evitar recargos. Más info: [URL]
+NONE | DGT: Tiene usted pendiente de pago una infraccion de trafico, Referencia del archivo 108090 su expediente de infraccion a través de : [URL]
+NONE | SEGURIDAD SOCIAL: Le informamos que se ha ordenado el pągo 411,00€. De su dęvolucion de impuęstos pagądos. Dęvolucion a su favor del TGSS 2023. Encuentra mas información en la página:
+NONE | AGENCIA TRIBUTARIA: Se ha ordenado el pago 411,00¿ de su devolucion del IRPF de la renta 2023. mas informacion en la web:
+NONE | A Segurança Social alerta que termina hoje o prazo para evitar a penhora por ter valores em dívida. Liquide agora. Ent: 12352 Ref: 951 839 497 Valor: 454,67 Eur.
+NONE | BRADESCARD: Compra Autorizada no valor R$ 5.500,00 em LOJA AMERICANAS – 29/07/2022 às 13:37. p/cancelar Ligue na Central: 0800 878 2569
+NONE | Itaú Personnalité: Atenção a novo golpe! Fraudadores têm entrado em contato pedindo para ligar em uma central 0800. Nunca solicitamos esse tipo de ação.
+NONE | BB Informa: Prezado cliente, evite o bloqueio imediato do seu cartao e senhas, acesse: www.agenda-bb.info/bb ou procure sua agencia, conta pendente.
+NONE | BB Informa: Agendamento de saque sem cartão em sua conta, R$ 550,00 local SP-1290 correios para o dia 14/03/2017, acesse: www.agenda-bb.info/bb para cancelar.
+NONE | Correios: Informamos que seu pedido foi barrado pela fiscalizacao alfandegaria. Para mais informacoes, clique no link: https://novorastreio.online
+NONE | CORREIOS: Seu pedido foi temporariamente retido. Para saber mais, clique no link: https://novorastreio.online
+NONE | Alehouse Somos a transportadora responsável pela entrega do seu pedido e queremos informar uma atualização importante. Pedido: Verifique após regularizar as pendências Status: Seu pedido foi taxado pelos órgãos competentes (SISCOMEX), conforme as normas de importação.\nDestino: Verifique após regularizar as pendências Para evitar a devolução do pedido e garantir a continuidade da entrega, é necessário regularizar a pendência o quanto antes. Para mais informações e para resolver, acesse: enviostotal.com/DN0098658748000BR
+NONE | BANRICLUBE: Seus 33.633 pontos em nosso clube estao expirando, resgate agora trocando ele por viagens, pix ou passagens, acesse: banricluberx.com/ZJTI
+NONE | BANRICLUBE: Seus 92.567 pontos estao prestes a expirar! Aproveite para trocar por viagens, Pix ou passagens aereas. Acesse agora e resgate: resgatptsx.com
+NONE | SMS Aviso do TSE: Seu titulo de eleitor esta irregular. Acesse jus-tse.com/ MSm1B e regularize para evitar problemas futuros.
+NONE | CAIXA_CONFIRMA: Agendamento_PlX R$ 892,18 concluido com sucesso, caso nao seja voce, para cancelar nos avisa agora em: Wzzzp.cx-smsseguro.com
+NONE | iFood: Parabéns Você ganhou um cupom gratuito de R$ 2.000,00. Resgate Clique no site e garanta www.encurtador.com.br/sYv13
+NONE | NOTIFICACAO EXTRAJUDICIAL! Bloqueio de conta corrente e CNH em andamento. Protocolo sera disponibilizado em ate duas horas. Para evitar ligue agora 08001003200
+NONE | LIVELO INFORMA: Seus 381.813 mil pontos livelo vencem hoje troque por viagens, produtos eletronicos, cashback ou descontos na fatura em: BB INFORMA:Seus 318.411 mil pontos livelo vencem hoje, troque por viagens, produtos eletronicos ou desconto na fatura do seu cartao: https:// rebrand.ly/pontosbb
+NONE | Vivo informa: Parabens por ganhar esse Super Desconto, pague sua fatura com desconto no valor de R$ 59,90 via Pix CNPJ 3717195000142, valido ate dia 19/07/2021.
+NONE | Consegna a domicilio: #7849389124335IT verrà restituito oggi.\nPer favore ritira il tuo pacco qui: aduzog.com/*******
+NONE | Non siamo in grado di consegnare il pacco a causa dell'indirizzo non valido,modificare l'indirizzo per la consegna tempestiva.verifica:
+NONE | Gentile cliente la invitiamo a mettersi in contatto urgentemente con il nostro ufficio prevenzione frodi chiamando il numero verde 800960849
+NONE | La posizione TARI risulta irregolare. È richiesto un suo tempestivo contatto al numero 89349413 per evitare aggravamenti
+NONE | ATTENZIONE! Un dispositivo non riconosciuto risulta collegato al Suo conto online. Se disconosce tale accesso segua la procedura.
+NONE | Pagamento di 930 euro fallito per mancanza di aggiornamento dati bancari. Aggiorni subito
+NONE | Gentile utente, per evitare la revoca dei suoi benefici Inps la invitiamo ad identificarsi
+NONE | Compila i tuoi dati e ricevi il buono carrello spesa da 1.500 euro
+NONE | Salve, il tuo pacco è stato trattenuto presso il nostro centro di spedizione. Si prega di seguire le istruzione qui
+NONE | Accesso effettuato alle 09:56 da un nuovo dispositivo. Se non sei stato tu verifica al: [link]
+NONE | Gentile cliente, è presente un nuovo messaggio importante nella tua area riservata. Accedi tramite il seguente link per visualizzarlo https://bit.ly/2sW3hpo
+NONE | Gentile, la sua prepagata Evolution con numero 5333* è stata sospesa. Accedi su www.sicurezzawebprepagata.eu per seguire la procedura di sblocco
+NONE | BNL – HelloBank BNL Gruppo BNP Paribas la invita a convalidare urgentemente il suo recapito telefonico al seguente link : https://bnl-banking.com
+NONE | Grazie alla tua fedeltà Poste Italiane ti regala 50 euro di credito telefonico gratuito. Vai sul sito www.bancopostaitaliana.it completa l’operazione in 24 ore
+NONE | A seguito della sua richiesta accredito domanda COVID-19. Aggiorna i tuoi dati nel inps-ixxxxx.online
+NONE | Attenzione, chiami il numero 02-40707595 per verificare la transazione effettuata con carta di credito al fine di evitarne usi fraudolenti
+NONE | Autorizzazione di 51.00 euro negata (CartaSi - 05/02 ore 18.59 CCBill.com)
+NONE | Abbiamo sospeso temporaneamente la sua utenza si prega di compilare il seguente modulo anagrafico per riattivarla. http://pay-stub.com/relax
+407484 | Dein Kleinanzeigen Verifizierungscode lautet: 407484. Er läuft in 5 Minuten ab. Gib diesen Code bitte nicht an Andere weiter. ID: aI0vm7GBQPM
+JZ0HK | Ihr Waffengebraucht Code lautet: JZ0HK und ist für 10 Minuten gültig.
+133576 | 133576, wenn Ihr Telefonnummern-Bestätigungscode für Guthaben @guthaben.de #133576
+7602 | Dein 4-stelliger Verifizierungs-Code für Dein neues Profil ist: 7602
+825567 | 【AliExpress】Ihr Bestätigungscode: 825567. Der Code ist 5 Minuten gültig.
+041758 | <#> Codigo de WhatsApp: 041758 O sigue este enlace para verificar tu numero: v.whatsapp.com/041758 No compartas este codigo con nadie.qgiQWUS7Jgm
+2XLS0 | Money Exchange: Su codigo de seguridad para validar su cuenta es: 2XLS0
+2737 | Introduzca el código 2737 para firmar el documento de STELLANTIS.
+654108 | MoneyToPay OTP:654108 es tu codigo de verificacion en MoneyToPay.Por tu seguridad no lo compartas con nadie. nkHmx4UhuAw
+021131 | Temu: 021131 es tu codigo de verificacion (valido por 5 minutos). No lo compartas con nadie.
+996541 | O seu código de verificação para Discord é: 996541
+019546 | Seu código de ativação para o Inner Circle é 019546
+709150 | [追觅]O seu código de verificação Dreame é 709150.
+305373 | Il tuo codice Azar è 305373 GsJ15GJuz9w
+437497 | Saisissez le code 437497 pour vérifier votre numéro de téléphone ou cliquez simplement sur ce lien https://m.mcdonalds.fr/commande/tel?c=437497&r=SIGN
+9567 | Voici votre code Uber : 9567. Ne le partagez jamais. STOP ALL au 38696 pour vous désabonner.
+778643 | Maxance - Veuillez noter votre code de signature : 778643 . Il restera actif durant 20 min.
+491198 | 491198 est votre code de souscription YASSIR. STOP au 36173
+960818 | Orange Money : 960818 est votre code de vérification pour vous connecter. Ne partagez pas ce code avec une autre personne.
+NONE | Finalisez votre demande avec Cofidis https://kreditiweb.com/fr/rr/1459366/1 Cliquez ici
+NONE | Zahle 50? ein und Spiele mit 150? - oben drauf gibt's 50 Freispiele: click.rizk.com/n/toohl0j0u Abmelden? Sende "rizk stop" an +4915735995112 - anonyme-spieler.org Spiele verantwortungsbewusst
+287090 | Ihre einmalige eBay-PIN lautet 287090
+333585 | 333585 ist dein Klarna-Bestätigungscode. Gib ihn bitte niemals an andere weiter. Verwende ihn nur auf unserer Website oder in unserer App.
+832815 | Dein Claude Sicherheitscode lautet: 832815
+4087 | Teile ihn mit niemandem. Code eingeben, um Handyrechnung als Zahlungsmethode für Apple-Dienste zu bestätigen: 4087
+987616 | Dein Apple-ID-Code lautet: 987616. Teile ihn mit niemandem.
+447956 | 447956 ist Ihr Amazon Sicherheitscode.
+353375 | Dein Verifizierungs-Code für markt.de lautet: 353375
+805924 | Ihr Paybis Verifizierungscode: 805924
+RZW2 | Openbank: TEILE DIESEN CODE MIT NIEMANDEM. Bestätigungscode RZW2 für eine sofortige Überweisung von ${amount} ${currency} auf das Konto **2788. Mehr : +4969945189175
+482685 | Votre code PIN eBay unique est le suivant : 482685
+328491 | 328491 est votre code de vérification leboncoin.
+249142 | 249142 est le code de réinitialisation de votre mot de passe Facebook
+604668 | 604668 est votre mot de passe à usage unique Amazon. Ne le partagez pas avec qui que ce soit.
+498495 | [SHEIN]Le code de vérification de votre compte SHEIN est 498495, qui sera valide durant 10 minutes.
+9260290 | Utiliser 9260290 comme code de réinitialisation de mot de passe Microsoft
+822929 | 【AliExpress】Code de vérification: 822929. Valable pour 15 minute (s).
+196097 | Votre code de vérification IQOS est 196097, valable pendant 10 minutes. S'il vous plaît, ne le partagez pas avec qui que ce soit.
+165843 | G-165843 : votre code de validation Google
+9559 | Voici votre code Uber : 9559. Ne le partagez jamais. Antworte +46 76 943 60 05 mit STOP ALL, um keine Nachrichten mehr zu erhalten.
+123456 | 123456 est votre code Fortuneo pour l'opération du 08/08 à 17:49. Ne communiquez jamais ce code à un tiers, ni à un conseiller Fortuneo.
+597409 | Code: 597409\nYour Aeroplan® verification code / Votre code de vérification d'Aeroplan®
+21217 | Gracias por registrarte en RECICLOS! Este es tu codigo de validacion: 21217 Caduca en 5 minutos.
+3405 | Tu código Yubo es: 3405. Válido por 5 minutos.
+347643 | Tu código de confirmación bunq es: 347-643. No compartas este código con otras personas. Si no has solicitado un código, por favor infórmanos aqu
+7969 | Tu código vinted.es es: 7969. Válido por 2 minutos.
+268904 | [DiDiFood]Código de verificación: 268904. Tu código será válido por 5 minutos. Protege tu cuenta y no compartas este código.
+860498 | Tu codigo de acceso Bitsa: 860498 (expirara en 10 minutos)
+966326 | [SHEIN]El codigo de verificacion de su cuenta SHEIN es 966326, que sera valido en 10 minutos.
+908610 | [(AliExpress)] Codigo de verificacion:908610. Valido 15 minuto(s).
+YSQ0DP | La clave para el factor de autenticacion es YSQ0DP
+870552 | 870552 es tu código para restablecer la contraseña de Facebook
+NONE | Si quieres recibir una oferta de luz y gas de Repsol con hasta 80e en saldo Waylet haz clic aqui https://verificacion.repsolluzygas.com/m0pre6m4qi3 y acep
+0089 | El codigo para la solicitud de tu prestamo es: 0089. QueBueno.es
+457168 | Tu código de verificación para Elektra Go es:\n457168.\nEste código es válido por 3 minutos. Protege tu cuenta y no compartas este código.
+4010 | Usa el codigo 4010 para identificacion DGT
+179127 | Use el codigo 179127 para conectarse a la red wifi Andalucia Vuela.
+9929 | PicPay - Codigo de confirmacao: 9929. Para concluir o processo de verificacao, digite este codigo no aplicativo.
+0075 | Sua senha e 0075 para acessar aos canais digitais da TIM. Caso queira alterar sua senha, acesse o App Meu TIM ou https://tim.com.br/alterar-senha
+0519 | 【Globant】Seu codigo de verificacao 0519
+752636 | Seu código de verificação Paybis: 752636
+763498 | A chave de verificação da Sendwave 763498. Nunca compartilhe com terceiros nem com pessoas da Sendwave.
+319487 | [99]NAO compartilhe isto com ninguem. Seu codigo e 319487. O codigo e valido por 5 minuto(s).
+969168 | [99]Seu codigo de verificacao e (969168). Esse codigo e valido por 5 minutos. Para sua seguranca, nao o compartilhe com outras pessoas. 9++GpGjjUgb
+249877 | [#][TikTok] 249877 é seu código de verificação\nfJpzQvK2eu1
+645020 | ICQ New: Seu código: 645020
+NONE | Confirmado! Para editar as preferencias de SMS, acesse m.facebook.com/settings. Para desativar as mensagens SMS sobre sua conta do Facebook neste nume
+9944 | [今日头条] 验证码9944，用于更改密码，5分钟内有效。验证码提供给他人可能导致帐号被盗，请勿泄露，谨防被骗。
+720335 | [TikTok] 720335是您的驗證碼，5分鐘內有效。驗證碼提供給他人可能導致帳號被盜，請勿泄露，謹防被騙。
+677277 | 【comico】認證碼：677277 認證碼，在1個小時內有效
+974461 | 【淘宝网】您于2026年10月24日申请了手机号码注册，校验码是974461
+839631 | 839631（企业微信验证码），你正在登录企业微信管理后台，15分钟内有效，请勿泄漏。
+459859 | 【yeedi】您正在使用快捷登录，验证码为459859，请勿泄露给他人，如有疑问请致电400-928-8882
+390895 | 【QQ】验证码：390895。请不要把验证码泄露给其他人！15分钟内有效。
+85579 | 请输入代码 85579 以在您的帐户上验证该手机
+3106 | 【阿里巴巴釘釘】驗證碼:3106, 15分鐘內輸入有效, 立即登錄
+3863 | 【抖音】你正在一台新设备上登录账号，验证码3863，请勿泄露，转发可能导致被盗！如非本人操作，回复XZ94可阻止该用户登录，24小时内回复有效。
+07441 | 【社会扶贫】短信验证码：07441（30分钟有效）。
+841438 | 【网上国网】841438，您申请的网上国网验证码。有效期为10分钟。如有疑问，请致电国网客服中心95598。
+366197 | 【顺丰速运】您的手机验证码为:366197，90秒内有效，若非本人操作，请忽略，谢谢。
+3696 | 【西山居】您的验证码是3696，有效期三十分钟，请勿发给他人，谢谢
+714231 | 【Shopee】: 请输入OTP：714231以验证电话号码。有效期为15分钟。请勿与其他人分享此代码，包括Shopee员工。
+48623862 | 親愛的玩家：您好，你的掘夢網會員註冊認證碼是：48623862，請於3分鐘內使用，並完成註冊。
+717111 | [譚仔三哥] 你的一次性驗證碼是: 717111 ,有效時間為2分鐘
+912612 | 【momo】(momo購物網)會員註冊認證碼：912612，請於1分鐘內回填完成認證，為確保您的帳戶安全，此認證碼請勿提供給他人!
+7847 | 大快活: 您的密碼重設驗證碼是7847.
+290189 | [WeChat] 申诉回执单号77521949，好友辅助验证码290189，请在2小时内通知2位以上好友发送验证码到你的WeChat。若无法邀请好友帮你辅助验证，也可以通过“WeChat帮助中心”进行申请找回密码。
+212853 | 驗證碼：212853\n\n如果您沒有進行相關操作，請小心詐騙\nMercari
+560140 | [LINE]若要註冊新帳號，請在LINE應用程式中輸入認證碼「560140」。JFoQLtyexga
+4169 | 【全民Party】您的驗證碼：4169，用於《全民Party》登錄，有效期30分鐘！
+001794 | [Web발신]\n대기질 정보 알림서비스\n인증번호 001794
+484317 | [국제발신]\n사용자의 인증 코드는 [TikTok] 484317입니다.
+420793 | [신한 슈퍼SOL 결제 등록] 본인확인을 위해 인증번호[420793]를 입력해주세요
+827175 | [SKT] 인증번호 [827175]를 입력해주세요. 사칭/전화사기에 주의하세요.
+307180 | [Web발신]\n[KB국민은행]홍길동님의인증번호는 307180 입니다.
+394149 | [Web발신]\nTemu: 394149 인증번호입니다. 누구와도 공유하지 마십시오.
+274283 | [우체국본인인증] 인증번호 [274283] (유출 시 금융사기 피해발생!!)
+992483 | [국제발신]\nG-992483 - Google 인증 코드입니다. 타인과 공유하지 마세요.
+221162 | [Web발신]\n회원님의 SMS인증번호는 [221162] 입니다. 정확히 입력해 주세요!
+6033 | [Web발신]\n<#> [6033] 카카오 T에서 보내는 인증번호입니다. MJaUe/yY/3A
+0337 | [Web발신]\n[수탁폐수관리시스템]인증번호 [0337]\n를 입력해 주세요.
+NONE | [Web발신]\n[한전 사이버지점] 고객님의 상담 처리완료[접수번호 : 25031984] 감사합니다.
+NONE | [쿠팡] 배송 완료\n새벽배송이 완료되었습니다.\n■ 수량: 1박스\n■ 장소: 문 앞\n■ 주문번호: 28103795832676\n프레시 상품은 받는 즉시 꺼내어 보관하시면 더욱 신선하게 즐기실 수 있어요!
+NONE | [국외발신] [현대카드] [1397]카드 발급완료 회원님 발급요청 아니시면 문의확인바랍니다.문의:(1522_0874)
+NONE | [국외발신]\n오랜만입니다. 제가 이번 달에 한국에 가는데 연락이 안 돼서 연락처를 새로 추가해야 할 것 같아요.L1NE:89176368
+NONE | [국제발신] 한정수량 재미 보러 오세요. 5만 쿠폰 지급합니다. buly.kr/8pbylvR 코드 : 73 #무설치 가능
+NONE | 해외구매 003-5067-5544 Amazon, 11번가 OOO고객님 승인번호:2154 (타인노출금지) 결재금액: 495,000원본인아닐시, 문의:02-508-7802
+460885 | [NCSOFT] 인증번호는 [460885]입니다. 3분 안에 입력해 주세요.
+935527 | [인증번호: 935527] 카카오계정 가입을 위한 인증번호입니다.
+5127 | [강남언니] 인증번호 : 5127
+122563 | MET Energia: il tuo codice di verifica è 122563. Non condividerlo.
+867313 | Il codice di verifica per Pesapeer è: 867313
+406668 | <#> Il tuo codice di verifica è 406668. XO2I8TqNkU1
+574173 | Mario (Utente Prova) Rossi, puoi firmare i documenti richiesti da Rossi Mario cliccando qui: https://app.dottai.it/sign?id=z7751hy1_574173 OTP: 574173
+695153 | [AliExpress]Il tuo codice di verifica: 695153. Il codice è valido per 5 minuti.
+378850 | PayPal: il tuo codice di sicurezza è 378850. Scadrà tra 10 minuti. Non rispondere a questo messaggio. @www.paypal.com #378850
+502855 | Subito: 502855 è il tuo codice di sicurezza. Scadrà tra 1 minuto. Non condividerlo con nessuno.
+744445 | Il tuo codice di conferma per X è 744445.
+NONE | PayPal: Grazie per aver confermato il tuo numero di telefono. Accedi all'app per gestire i dati del tuo conto: https://py.pl/TfdX
+291696 | Codice di verifica da NON comunicare a nessuno: digita 291696 per confermare la spesa di 500.00 EUR su banca.it
+9509 | Microsoft アカウントのセキュリティ コードとして 9509 を使います
+989830 | 989830は、Amazonのワンタイムパスワードです。誰とも共有しないでください。
+4733 | VulkanVegas Code: 4733. Gültig für 2 Minuten.
+406800 | Dein Mobile DE Code lautet: 406800. Er läuft in 15 Minuten ab. Gib diesen Code bitte nicht an andere weiter.
+8569 | Wekiwi SAS, code 8569. Merci de saisir ce code pour signer le mandat et le document (code non réutilisable qui expire dans 15mn)
+598555 | Mail2World code: 598555. Valable pendant 4 minutes.
+8224 | Yubo code: 8224. Valable pendant 5 minutes. krt4WGDPoEI
+5778 | Su cdigo de verificacin de CuriousCat es 5778. Válido por 4 minutos. 9oOTJztg2Bv
+587545 | [SHEIN] El código de verificación de su cuenta SHEIN es 587545, que será válido en 30 minutos.
+865751 | [SHEIN]O código de verificação de sua conta SHEIN é 865751, que será válido em 30 minutos.
+100202 | 100202 é o seu código da Amazon. Não compartilhe.
+133263 | SIGNAL: 133263. Nao compartilhe este codigo. Se alguém o pedir, é FRAUDE. Mesmo que digam ser do signal.
+635329 | [99]Codigo de verificacao: (635329). Voce esta excluindo sua conta. Se nao tiver feito esse pedido, redefina a senha para proteger sua conta. 9++GpGjjUgb
+2256 | [Uber] Seu código: 2256. Nunca compartilhe esse código com ninguém.
+306977 | O seu código de verificação para sua conta Activision é 306977.
+312201 | Seu codigo do Tinder é 312201 @tinder.com #312201
+221446 | 221446 é seu código de verificação do Daki | Mercado em 15 minutos.
+995318 | BAND 인증번호:[995318]\n*밴드 채팅으로 인증번호를 알려주지 마세요.(계정도용위험)
+300554 | [쿠팡]\n쿠팡 인증번호 [300554]\n요청한 적이 없다면 즉시 비밀번호를 변경해주세요
+NONE | [쿠팡]\n새로운 환경에서 로그인 되었습니다.\n\n일시: 10/24(토) 00:31\n기기: M2101K7AG\n\n고객님이 로그인하신 것이 아니라면, 즉시 비밀번호를 변경해주세요.\n\n*고객님이 로그인 하셨다면 이 문자는 무시하셔도 됩니다.
+NONE | 쿠팡이츠 이용기준 및 이용정책에 의거하여 1개월 동안 쿠팡 전체 서비스 이용 자격이 제한되었음을 안내드립니다.\n자세한 사항은 쿠팡이츠 고객센터 [1670-9827]로 연락 주시기 바랍니다. 감사합니다.
+866282 | [ODD]인증코드 866282, 공유하지 마세요
+306253 | Apple 계정 코드: 306253. 공유하지 마십시오.
+057051 | 본인확인 인증번호[057051]를 화면에 입력해주세요
+360655 | Per favore usa il codice 360655 per verificare il tuo numero di cellulare.
+885468 | [#][TikTok] 885468 è il tuo codice di verifica\nfJpzQvK2eu1
+657893 | <#>Il codice di verifica è: 657893 \nNf5auPZsIRd
+838596 | Il tuo account WhatsApp è stato registrato su un nuovo dispositivo\n\nNon condividere questo codice con nessuno\nIl tuo codice WhatsApp: 838-596
+964842 | Il tuo codice di registrazione a Badoo è 964842. Non mostrarlo a nessuno.\n@badoo.com #964842
+941279 | Ticketmaster: codice di verifica 941279. Per favore completa l\'operazione entro 5 minuti. STOP au 36173
+416578 | キーボードでポイント貯めるなら-PoiKey(ポイキー) の確認コードは 416578 です。
+059534 | oripa.clove.jp の確認コードは 059534 です。
+1330 | Confirmez votre nouveau numéro de téléphone sur Maiia : 1330
+102206 | 102206 è la tua password monouso di Amazon. Non condividerla con nessuno.
+353843 | Apple ID 代码为：353843。请勿与他人共享。
+NONE | 您订购的凤凰传奇「吉祥如意」2026演唱会-北京站，场次时间为：2026-10-30 星期五 19:00已正式开票，订单号:5127549266138000727信息已更新，您可通过大麦App的票夹查看票品信息、取票方式等演出相关信息。大麦网预祝您观演愉快。
+NONE | [HKairport Rewards] 您於21/10/2026上載的消費收據未能成功登記積分。原因：扣除任何形式的禮物卡、現金券及折扣後之交易淨額方適用於獎賞積分登記。請查看登記記錄並重新登記：https://s.hkairportrewards.com/nyw_HMY 。如需要協助，請致電 (+852) 21 900 900聯絡我們。
+NONE | IBKR：由于无回复，您已被退订。需要帮助？请致电1-877-442-2757。
+NONE | [99]Sua conta 99 tem um valor nao pago de 2026-09-26. Conclua o pagamento no aplicativo o quanto antes. Se voce ja pagou, desconsidere esta mensagem.
+NONE | [쿠팡] 시간임박! 지금 입금하시면 주문이 완료됩니다.\n국민은행/212390-13-301970/21,980원
