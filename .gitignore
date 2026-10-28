@@ -16,3 +16,4 @@ site/download/*.dmg
 *.pem
 *.key
 __pycache__/
+recordings/
