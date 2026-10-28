@@ -1,9 +1,14 @@
 .build/
-.DS_Store
+.build-local/
 .build-release/
+.build-stock/
+.DS_Store
+.swiftpm/
+.vscode/
+dist/
+*.dmg
 site/download/*.dmg
 .release.env
-.swiftpm/
 .env
 .env.*
 *.p12
