@@ -117,7 +117,7 @@ struct MenuContent: View {
                                 }
                             }
                             .padding(.horizontal, 6)
-                            .animation(.snappy(duration: 0.18), value: selectionID)
+                            .animation(.easeOut(duration: 0.15), value: selectionID)
                         }
                     }
                 }

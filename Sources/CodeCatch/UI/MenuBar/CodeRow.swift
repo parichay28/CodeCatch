@@ -7,6 +7,7 @@ struct CodeRow: View {
     /// Shared by the rows, so the one selection highlight slides between them.
     let selection: Namespace.ID
     @ObservedObject private var model = AppModel.shared
+    @ObservedObject private var clock = AppModel.shared.clock
     @Local private var hovering = false
     /// Set by a click: the pill says "Copied" for a moment, then shows the code again.
     @Local private var clickedAt: Date?
@@ -49,7 +50,7 @@ struct CodeRow: View {
                         Image(systemName: "pin.fill").font(.caption2).foregroundStyle(.tertiary).accessibilityLabel("Pinned")
                     }
                     if item.origin != .vault {
-                        Text(item.age(now: model.now)).font(.subheadline).foregroundStyle(.tertiary).monospacedDigit()
+                        Text(item.age(now: clock.now)).font(.subheadline).foregroundStyle(.tertiary).monospacedDigit()
                     }
                     if !live, !copied {
                         Text("Expired").font(.caption.weight(.medium)).foregroundStyle(.tertiary)
@@ -73,6 +74,8 @@ struct CodeRow: View {
                     Label(locked ? "Unlock" : "Open", systemImage: locked ? "lock.fill" : item.kind.symbol)
                         // Faded once expired, like an expired code: still clickable, since the link may still work.
                         .foregroundStyle(active ? AnyShapeStyle(.white) : AnyShapeStyle(live ? .primary : .tertiary))
+                        // Only the link's icon swaps in place; a code's digits must not scale.
+                        .contentTransition(.symbolEffect(.replace))
                 }
                 // Blue marks what a click or Return does, as Open Link does on the card.
                 .buttonStyle(ActionButtonStyle(prominent: active, compact: true))
@@ -84,8 +87,8 @@ struct CodeRow: View {
                 HStack(spacing: 8) {
                     // A fixed slot: the ring comes and goes without pushing the code aside.
                     ZStack {
-                        if live, !copied, item.showsCountdown(now: model.now) {
-                            ExpiryRing(item: item, now: model.now, size: 14).transition(.scale(scale: 0.6).combined(with: .opacity))
+                        if live, !copied, item.showsCountdown(now: clock.now) {
+                            ExpiryRing(item: item, now: clock.now, size: 14).transition(.scale(scale: 0.9).combined(with: .opacity))
                         }
                     }
                     .frame(width: 14)
@@ -122,7 +125,7 @@ struct CodeRow: View {
                 // Each click restarts the moment; a cancelled wait leaves it to the newer click.
                 .task(id: clickedAt) {
                     guard clickedAt != nil, (try? await Task.sleep(for: .seconds(1.2))) != nil else { return }
-                    withAnimation(.snappy(duration: 0.3)) { clickedAt = nil }
+                    withAnimation(.easeOut(duration: 0.15)) { clickedAt = nil }
                 }
             }
             // The right-click actions, findable. Always there, quiet until hovered: the rows end on one
@@ -140,7 +143,7 @@ struct CodeRow: View {
                 shape.fill(Color.hoverFill(hovering))
             }
         }
-        .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: copied)
+        .animation(.easeOut(duration: 0.15), value: copied)
         .accessibilityAddTraits(selected ? .isSelected : [])
         .contentShape(Rectangle())
         .onHover { on in withAnimation(hoverAnimation(on)) { hovering = on } }
@@ -156,7 +159,7 @@ struct CodeRow: View {
         }
         model.unlocked {
             if item.isLink { return model.open(item, leavingMenu: true) }
-            withAnimation(.snappy(duration: 0.25, extraBounce: 0.15)) {
+            withAnimation(.easeOut(duration: 0.15)) {
                 model.copy(item)
                 clickedAt = Date()
             }
@@ -165,13 +168,9 @@ struct CodeRow: View {
 }
 
 extension View {
-    /// The mark draws itself in; before macOS 26 it pops in.
+    /// The mark pops in at nearly full size: a small scale reads as a stutter, not a flourish.
     @ViewBuilder fileprivate func drawnIn() -> some View {
-        if #available(macOS 26, *) {
-            transition(.symbolEffect(.drawOn))
-        } else {
-            transition(.scale(scale: 0.2).combined(with: .opacity))
-        }
+        transition(.scale(scale: 0.9).combined(with: .opacity))
     }
 }
 

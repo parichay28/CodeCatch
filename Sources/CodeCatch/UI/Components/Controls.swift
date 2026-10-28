@@ -13,7 +13,6 @@ struct ActionButtonStyle: ButtonStyle {
         configuration.label
             .font(compact ? .subheadline.weight(.medium) : .body.weight(.semibold))
             .labelStyle(.titleAndIcon)
-            .contentTransition(.symbolEffect(.replace))
             .lineLimit(1)
             .frame(minWidth: compact ? 70 : nil, maxWidth: compact ? nil : .infinity, minHeight: compact ? 24 : 30)
             .padding(.horizontal, 10)
@@ -24,7 +23,7 @@ struct ActionButtonStyle: ButtonStyle {
             }
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .opacity(configuration.isPressed ? 0.85 : 1)
-            .animation(.snappy(duration: 0.15), value: configuration.isPressed)
+            .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
             .contentShape(Capsule())
     }
 }

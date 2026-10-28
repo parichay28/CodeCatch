@@ -17,14 +17,31 @@ struct CodeText: View {
     var weight: Font.Weight = .semibold
     var concealed = false
 
-    var body: some View {
+    /// Wide enough that no digit survives, whatever the point size.
+    private var blurRadius: CGFloat { max(4, size * 0.2) }
+
+    private var text: some View {
         Text(groupedCode(code, wide: true))
             .font(.system(size: size, weight: weight).monospacedDigit())
-            .blur(radius: concealed ? max(4, size * 0.2) : 0)  // at least 4, or a small row code stays legible
-            .animation(.easeOut(duration: 0.15), value: concealed)
             .tracking(size * 0.05)
             .lineLimit(1)
-            .minimumScaleFactor(0.45)
+            // Never shrunk to fit: a fitting pass animates the glyph scale, which read as the code
+            // zooming inside a still pill. The glyphs keep one size; the capsule grows around them.
+            .fixedSize(horizontal: true, vertical: false)
+    }
+
+    var body: some View {
+        // Two copies, one sharp and one blurred. The sharp one is always laid out, so revealing the
+        // code cannot change the text's width, and only opacity animates: animating the blur radius
+        // re-rasterises the text every frame, which is what made hovering stutter.
+        text
+            .opacity(concealed ? 0 : 1)
+            .overlay {
+                if concealed {
+                    text.blur(radius: blurRadius).accessibilityHidden(true)
+                }
+            }
+            .animation(.easeOut(duration: 0.12), value: concealed)
             .accessibilityLabel("Code \(code.map(String.init).joined(separator: " "))")
     }
 }
