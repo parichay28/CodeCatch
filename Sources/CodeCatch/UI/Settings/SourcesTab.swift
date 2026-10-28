@@ -54,7 +54,7 @@ struct SourcesTab: View {
                 let status = model.status[MessagesStore.sourceKey] ?? .off
                 let codes = model.isOn(Prefs.receivedCodes)
                 let about =
-                    "Reads codes from iMessage and SMS on this Mac. For SMS, turn on Text Message Forwarding in your iPhone’s Messages settings. Needs Full Disk Access."
+                    "Reads codes from iMessage and SMS on this Mac. For SMS, turn on Text Message Forwarding in your iPhone’s Messages settings. Needs Full Disk Access, the only way macOS lets apps read Messages."
                 SettingRow(
                     symbol: SourceKind.messages.symbol, color: SourceKind.messages.color, title: "Messages",
                     subtitle: codes ? problem(status) : "Paused while Verification Codes is off", info: about, status: status,
@@ -68,7 +68,7 @@ struct SourcesTab: View {
             Section("Mail") {
                 let appleMail = model.status[AppleMailStore.sourceKey] ?? .off
                 let aboutMail =
-                    "Reads new mail in the Mail app on this Mac, with no sign-in. Nothing is changed or marked as read. Mail fetches new mail only while it is open. Needs Full Disk Access."
+                    "Reads new mail in the Mail app on this Mac, with no sign-in. Nothing is changed or marked as read. Mail fetches new mail only while it is open. Needs Full Disk Access, which macOS requires to read Mail’s files."
                 SettingRow(
                     symbol: SourceKind.appleMail.symbol, color: SourceKind.appleMail.color, title: "Apple Mail", subtitle: problem(appleMail), info: aboutMail,
                     status: appleMail,
@@ -233,9 +233,9 @@ struct SourcesTab: View {
         if status.needsDiskAccess {
             SettingRow(
                 symbol: "lock.shield.fill", color: .orange, title: "Full Disk Access Needed",
-                subtitle: "Turn on CodeCatch in the list that opens."
+                subtitle: "Used only to read Messages and Apple Mail. Turn on CodeCatch in the list that opens."
             ) {
-                Button("Open Settings") { SystemSettings.fullDiskAccess() }
+                Button("Allow…") { SystemSettings.fullDiskAccess() }
             }
         }
     }

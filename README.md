@@ -55,7 +55,7 @@ To check it works, open the menu → gear → **Show Test Code**.
 
 | Permission | Why |
 |---|---|
-| **Full Disk Access** | To read Messages and Apple Mail |
+| **Full Disk Access** | Only to read Messages and Apple Mail. Mail accounts don't need it. |
 | **Accessibility** | Only to type codes for you |
 
 ### Mail

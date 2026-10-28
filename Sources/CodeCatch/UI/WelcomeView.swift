@@ -36,8 +36,8 @@ struct WelcomeView: View {
                         .disabled(!model.isOn(Prefs.receivedCodes))
                 }
             }
-            Section("What to Catch") {
-                let messages = model.status[MessagesStore.sourceKey] ?? .off
+            let messages = model.status[MessagesStore.sourceKey] ?? .off
+            Section {
                 SettingRow(
                     symbol: SourceKind.messages.symbol, color: SourceKind.messages.color, title: "Messages",
                     subtitle: messages.needsDiskAccess
@@ -58,9 +58,20 @@ struct WelcomeView: View {
                 }
                 SettingRow(
                     symbol: SourceKind.mail.symbol, color: SourceKind.mail.color, title: "Mail Accounts and Bitwarden",
-                    subtitle: "Gmail, iCloud, Yahoo, other mail and Bitwarden codes"
+                    subtitle: "Gmail, Outlook, iCloud, other mail and Bitwarden codes"
                 ) {
                     Button("Set Up…") { openSettings(at: .sources) }
+                }
+            } header: {
+                Text("What to Catch")
+            } footer: {
+                if messages.needsDiskAccess {
+                    Text(
+                        "macOS lets apps read Messages only with Full Disk Access. CodeCatch reads Messages and Apple Mail, nothing else. "
+                            + "It never changes them. Codes stay on this Mac. If you’d rather not, turn Messages off. "
+                            + "Gmail, Outlook and other mail work without it."
+                    )
+                    .font(.caption).foregroundStyle(.secondary)
                 }
             }
             Section("Good to Know") {
