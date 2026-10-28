@@ -103,8 +103,14 @@ struct CodeRow: View {
                                     .transition(.opacity)
                             }
                         }
+                        // Blurred codes stay readable; locked dots keep their quiet colour.
                         .foregroundStyle(
-                            active ? AnyShapeStyle(.white) : copied ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(live ? .primary : .tertiary))
+                            active
+                                ? AnyShapeStyle(.white)
+                                : copied
+                                    ? AnyShapeStyle(Color.accentColor)
+                                    : concealed && !locked ? AnyShapeStyle(.secondary)
+                                    : AnyShapeStyle(live ? .primary : .tertiary))
                     }
                     .buttonStyle(ActionButtonStyle(prominent: active, compact: true))
                     .animation(nil, value: active)
