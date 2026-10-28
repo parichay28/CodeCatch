@@ -23,14 +23,22 @@ private struct GlassBackground: ViewModifier {
     private let shape = RoundedRectangle(cornerRadius: 24, style: .continuous)
 
     func body(content: Content) -> some View {
+        #if compiler(>=6.2)
         if #available(macOS 26, *), !Glass.useMaterial {
             content.glassEffect(.regular, in: shape)
         } else {
-            content
-                .background(VisualEffect().clipShape(shape))
-                .overlay(shape.strokeBorder(.primary.opacity(0.1), lineWidth: 0.5))
-                .shadow(color: .black.opacity(0.18), radius: 14, y: 6)
+            fallback(content)
         }
+        #else
+        fallback(content)
+        #endif
+    }
+
+    private func fallback(_ content: Content) -> some View {
+        content
+            .background(VisualEffect().clipShape(shape))
+            .overlay(shape.strokeBorder(.primary.opacity(0.1), lineWidth: 0.5))
+            .shadow(color: .black.opacity(0.18), radius: 14, y: 6)
     }
 }
 
