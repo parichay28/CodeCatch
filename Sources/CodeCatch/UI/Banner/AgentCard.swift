@@ -39,6 +39,7 @@ enum AgentPanel {
 struct AgentRequestCard: View {
     @ObservedObject private var access = AppModel.shared.agents
     @ObservedObject private var model = AppModel.shared
+    @ObservedObject private var clock = AppModel.shared.clock
     /// Buttons wait a moment after the card appears, so a click meant for something else can't land on Allow.
     @Local private var armed = false
 
@@ -117,7 +118,7 @@ struct AgentRequestCard: View {
     }
 
     private func ago(_ date: Date) -> String {
-        let s = max(0, Int(model.now.timeIntervalSince(date)))
+        let s = max(0, Int(clock.now.timeIntervalSince(date)))
         return s < 60 ? "\(s)s ago" : "\(s / 60) min ago"
     }
 

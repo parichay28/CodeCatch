@@ -10,6 +10,7 @@ struct CodeCard: View {
     let item: CodeItem
     let style: Style
     @ObservedObject private var model = AppModel.shared
+    @ObservedObject private var clock = AppModel.shared.clock
     @Local private var hoveringCard = false
     @Local private var hoveringCode = false
     @AppStorage(Prefs.blurCodes) private var blurCodes = false
@@ -79,7 +80,7 @@ struct CodeCard: View {
             if style == .banner, hoveringCard {
                 GlyphButton(symbol: "xmark", help: "Dismiss") { Banner.shared.hide() }
             } else {
-                Text(item.age(now: model.now)).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                Text(item.age(now: clock.now)).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
             }
         }
         .frame(height: 38)
@@ -103,12 +104,12 @@ struct CodeCard: View {
                 Label("Expired", systemImage: "clock.badge.xmark")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.red)
-            } else if item.showsCountdown(now: model.now) {
+            } else if item.showsCountdown(now: clock.now) {
                 HStack(spacing: 8) {
-                    Text(item.remaining(now: model.now))
+                    Text(item.remaining(now: clock.now))
                         .font(.callout.weight(.medium).monospacedDigit())
                         .foregroundStyle(.secondary)
-                    ExpiryRing(item: item, now: model.now, size: 22)
+                    ExpiryRing(item: item, now: clock.now, size: 22)
                 }
                 .transition(.opacity)
             }

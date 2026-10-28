@@ -2,13 +2,14 @@ import SwiftUI
 
 struct MenuBarLabel: View {
     @ObservedObject private var model = AppModel.shared
+    @ObservedObject private var clock = AppModel.shared.clock
     @AppStorage(Prefs.codeInMenuBar) private var showCode = true
     @AppStorage(Prefs.blurCodes) private var blurCodes = false
 
     var body: some View {
         HStack(spacing: 4) {
             Image(nsImage: AppBrand.menuBarImage).accessibilityLabel(AppBrand.name)
-            if showCode, !blurCodes, model.isUnlocked, let item = model.latestCode, !item.used, item.shouldAnnounce(at: model.now) {
+            if showCode, !blurCodes, model.isUnlocked, let item = model.latestCode, !item.used, item.shouldAnnounce(at: clock.now) {
                 Text(groupedCode(item.code)).monospacedDigit()
             } else if !model.isUnlocked, model.latest != nil {
                 Image(systemName: "lock.fill").accessibilityLabel("Locked")

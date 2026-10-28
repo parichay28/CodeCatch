@@ -17,8 +17,11 @@ final class AppModel: ObservableObject {
     @Published private(set) var items: [CodeItem] = [] {
         didSet { agents.itemsChanged() }
     }
-    /// Current to the second; views hear of a new second only while one shows it (see `tick`).
+    /// The last tick. Not published: a second passing changes the age and countdowns, not the
+    /// code list, and republishing it re-rendered every row once a second while scrolling.
+    /// Views that show time observe `clock` instead, so a tick updates them alone.
     private(set) var now = Date()
+    let clock = Clock()
     /// Why the last unlock failed; cleared when the next one starts.
     @Published private(set) var unlockError: String?
     /// Senders whose messages are never read for codes: addresses, domains and SMS senders.
@@ -185,6 +188,7 @@ final class AppModel: ObservableObject {
         let onScreen = NSApplication.shared.windows.contains { $0.occlusionState.contains(.visible) && $0.className != "NSStatusBarWindow" }
         if onScreen || menuBarLabel(at: now) != menuBarLabel(at: date) { objectWillChange.send() }
         now = date
+        clock.now = date
         // Every window, including menus and tooltips, follows a change within a second; the banner,
         // the popover and Recent Emails are also covered from their first frame.
         let sharing: NSWindow.SharingType = isOn(Prefs.hideFromCapture) ? .none : .readOnly
@@ -592,4 +596,11 @@ final class AppModel: ObservableObject {
         guard let i = items.firstIndex(where: { $0.id == item.id }), !items[i].used else { return }
         items[i].used = true
     }
+}
+
+/// The one thing a tick publishes. Kept out of AppModel so a second passing cannot invalidate
+/// views that only read the code list.
+@MainActor
+final class Clock: ObservableObject {
+    @Published fileprivate(set) var now = Date()
 }
