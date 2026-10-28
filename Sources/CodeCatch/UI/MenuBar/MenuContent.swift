@@ -63,7 +63,7 @@ struct MenuContent: View {
                 attention(problem.label, detail.compactMap { $0 }.joined(separator: " · "), fix: fix(problem.status, account))
                     .padding(.horizontal, 10).padding(.bottom, 10)
             } else if model.receiving, !hasLogins, model.sources.allSatisfy({ $0.status == .off }) {
-                attention("All sources off", "Turn on a source in Settings.", fix: ("Open Settings", { openSettings(at: .sources) }))
+                attention("All sources off", "Turn on a source in Settings.", fix: ("Open Settings", { leave { openSettings(at: .sources) } }))
                     .padding(.horizontal, 10).padding(.bottom, 10)
             }
             if model.items.count > Self.recent || hasLogins || searchRequested { searchField }
@@ -222,7 +222,7 @@ struct MenuContent: View {
 
     private var appMenu: some View {
         GlyphMenu(symbol: "gearshape", help: "Settings and more") {
-            Button("Settings…") { openSettings(at: nil) }.keyboardShortcut(",")
+            Button("Settings…") { leave { openSettings(at: nil) } }.keyboardShortcut(",")
             Divider()
             // Recent Emails reads only mail: with Messages alone it would be an empty window.
             Button("Recent Emails") { leave { openWindow(id: RecoveryView.windowID) } }
@@ -270,7 +270,7 @@ struct MenuContent: View {
             status.needsSignIn ? "Sign In…" : "Edit Account…",
             {
                 model.editAccountRequest = account.id
-                openSettings(at: .sources)
+                leave { openSettings(at: .sources) }
             }
         )
     }
@@ -331,7 +331,7 @@ struct MenuContent: View {
                             .compactMap { $0 }.joined(separator: "\n"))
         } actions: {
             if model.receiving {
-                Button("Add Source…") { openSettings(at: .sources) }
+                Button("Add Source…") { leave { openSettings(at: .sources) } }
                     .controlSize(.small)
             }
         }
