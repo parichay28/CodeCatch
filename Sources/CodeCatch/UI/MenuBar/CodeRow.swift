@@ -61,8 +61,10 @@ struct CodeRow: View {
                         .font(.subheadline).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
                         .help(item.linkNotice?.text ?? "")
                 }
-                if item.origin != .vault, showPreviews, !concealed, !context.isEmpty {
-                    Text(context).font(.caption).foregroundStyle(.tertiary).lineLimit(1)
+                // Always laid out, with the code hidden, so hovering cannot change the row's height.
+                if item.origin != .vault, showPreviews, !context.isEmpty {
+                    Text(concealed ? CodeMask.masked(context, code: item.code) ?? context : context)
+                        .font(.caption).foregroundStyle(.tertiary).lineLimit(1)
                 }
             }
             Spacer(minLength: 8)
