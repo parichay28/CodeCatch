@@ -7,6 +7,7 @@ struct PrivacyTab: View {
     @AppStorage(Prefs.codeInMenuBar) private var codeInMenuBar = true
     @AppStorage(Prefs.showPreviews) private var showPreviews = true
     @AppStorage(Prefs.clearClipboard) private var clearClipboard = true
+    @AppStorage(Prefs.clipboardHistory) private var clipboardHistory = false
     @AppStorage(Prefs.serviceIcons) private var serviceIcons = true
     @AppStorage(Prefs.historyDays) private var historyDays = 7
     @AppStorage(Prefs.clearOnLock) private var clearOnLock = false
@@ -38,8 +39,13 @@ struct PrivacyTab: View {
                 SettingRow(
                     symbol: "clock.arrow.circlepath", color: .orange, title: "Clear Clipboard After 90 Seconds",
                     info:
-                        "Only if you have not copied something else since. Codes do not sync to your other devices, and clipboard managers are asked to skip them.",
+                        "Only if you have not copied something else since. Codes never sync to your other devices.",
                     isOn: $clearClipboard)
+                SettingRow(
+                    symbol: "list.clipboard.fill", color: .orange, title: "Keep Codes in Clipboard History",
+                    info:
+                        "Clipboard managers skip codes unless you allow this. They stay on this Mac either way and are never synced to your other devices.",
+                    isOn: $clipboardHistory)
                 SettingRow(
                     symbol: "app.badge.fill", color: .purple, title: "Show Service Logos",
                     info:

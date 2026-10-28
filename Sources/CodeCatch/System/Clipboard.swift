@@ -8,11 +8,19 @@ enum Clipboard {
     private static var copied: (id: UUID?, change: Int)?
 
     /// `id`: the code item or email on the clipboard, for the "Copied" label.
-    static func copy(_ text: String, id: UUID? = nil, pasteboard pb: NSPasteboard = .general) {
+    /// `history`: whether clipboard managers may record it, read from the privacy setting unless passed.
+    static func copy(
+        _ text: String, id: UUID? = nil, pasteboard pb: NSPasteboard = .general,
+        history: Bool = Prefs[Prefs.clipboardHistory]
+    ) {
         pb.prepareForNewContents(with: .currentHostOnly)
         pb.setString(text, forType: .string)
-        pb.setString("", forType: .init("org.nspasteboard.ConcealedType"))
-        pb.setString("", forType: .init("org.nspasteboard.TransientType"))
+        // A remembered copy is the one thing clipboard managers need to be told to skip. Anonymity
+        // from Universal Clipboard stays either way: `.currentHostOnly` never syncs.
+        if !history {
+            pb.setString("", forType: .init("org.nspasteboard.ConcealedType"))
+            pb.setString("", forType: .init("org.nspasteboard.TransientType"))
+        }
         let change = pb.changeCount
         copied = (id, change)
         guard Prefs[Prefs.clearClipboard] else { return }

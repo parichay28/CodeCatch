@@ -5,6 +5,7 @@ enum Prefs {
     static let codeInMenuBar = "codeInMenuBar", sound = "sound", messages = "messagesEnabled", appleMail = "appleMailEnabled", launchAtLogin = "launchAtLogin"
     static let historyDays = "historyDays", serviceIcons = "serviceIcons"
     static let hideFromCapture = "hideFromCapture", blurCodes = "blurCodes", showPreviews = "showPreviews"
+    static let clipboardHistory = "clipboardHistory"
     static let clearOnLock = "clearOnLock", clearedAt = "historyClearedAt"
     static let ignoredSenders = "ignoredSenders", dismissed = "dismissedMessages", vaultImportedAt = "vaultImportedAt"
     static let notCodes = "notCodes"
@@ -23,6 +24,7 @@ enum Prefs {
             showBanner: true, autoCopy: true, autoType: false, clearClipboard: true, codeInMenuBar: true,
             sound: false, messages: true, appleMail: false, launchAtLogin: true, historyDays: 7, serviceIcons: true,
             hideFromCapture: true, blurCodes: false, showPreviews: true, clearOnLock: false, hotkeys: true,
+            clipboardHistory: false,
         ])
     }
 
