@@ -35,8 +35,23 @@ enum MenuBarPopover {
     static func close() {
         // `expandedInterfaceSession?.cancel()`, public in the macOS 27 SDK: by name, as CI builds with an older one.
         let session = "expandedInterfaceSession"
-        guard let statusItem, statusItem.responds(to: NSSelectorFromString(session)) else { return }
-        (statusItem.value(forKey: session) as? NSObject)?.perform(NSSelectorFromString("cancel"))
+        if let statusItem, statusItem.responds(to: NSSelectorFromString(session)) {
+            (statusItem.value(forKey: session) as? NSObject)?.perform(NSSelectorFromString("cancel"))
+            return
+        }
+        // macOS 15–26 have no session to cancel, and do not always close the popover for another
+        // window. Dismiss it the way Escape does, so the status item's idea of "open" stays in step;
+        // ordering the window out behind its back can leave the next click doing nothing.
+        guard let window = NSApp.windows.first(where: { $0.className.contains("MenuBarExtraWindow") && $0.isVisible })
+        else { return }
+        if let escape = NSEvent.keyEvent(
+            with: .keyDown, location: .zero, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime,
+            windowNumber: window.windowNumber, context: nil, characters: "\u{1b}", charactersIgnoringModifiers: "\u{1b}",
+            isARepeat: false, keyCode: 53)
+        {
+            window.sendEvent(escape)
+        }
+        if window.isVisible { window.orderOut(nil) }
     }
 
     // Only the status bar window has this key; asking any other window raises.
